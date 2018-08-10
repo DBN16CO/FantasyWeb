@@ -1,0 +1,78 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% load static %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+<script src="{% static 'js/login.js' %}"></script>
+
+<div class="container">
+    	<div class="row justify-content-center">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-6"><a href="" class="active" id="login-form-link">Login</a></div>
+							<div class="col-md-6"><a href="" id="register-form-link">Register</a></div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<form id="login-form" method="post" role="form" style="display: block;">
+								{% csrf_token %}
+
+								<div class="form-group">
+									<input type="text" name="username" id="id_username" tabindex="1" class="form-control" placeholder="Username" value="">
+								</div>
+								<div class="form-group">
+									<input type="text" name="password" id="id_password" tabindex="2" class="form-control" placeholder="Password" value="">
+								</div>
+								<div class="form-group">
+									<div class="container">
+										<div class="row justify-content-center">
+											<div class="col-md-8">
+												<input type="submit" tabindex="3" class="form-control btn btn-login" value="Login" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+
+							<form action="/register/" id="register-form" method="post" role="form" style="display: none;">
+								{% csrf_token %}
+
+								<div class="form-group">
+									<input type="text" name="username" id="id_username" tabindex="1" class="form-control" placeholder="Username" value="">
+								</div>
+								<div class="form-group">
+									<input type="text" name="email" id="id_email" tabindex="2" class="form-control" placeholder="Email Address" value="">
+								</div>
+								<div class="form-group">
+									<input type="text" name="password" id="id_password" tabindex="3" class="form-control" placeholder="Password" value="">
+								</div>
+								<div class="form-group">
+									<input type="text" name="confirm" id="id_confirm" tabindex="4" class="form-control" placeholder="Confirm Password" value="">
+								</div>
+								<div class="form-group">
+									<div class="container">
+										<div class="row justify-content-center">
+											<div class="col-md-6">
+												<input type="submit" tabindex="5" class="form-control btn btn-login" value="Register" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
