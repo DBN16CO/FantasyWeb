@@ -1,0 +1,6 @@
+[report]
+omit = *__init__.py*
+       */migrations/*
+       *settings.py*
+       *wsgi.py*
+       *.pyc*

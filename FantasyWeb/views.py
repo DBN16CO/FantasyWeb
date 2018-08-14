@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Permission, User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -7,10 +8,8 @@ from django.urls import reverse
 
 from .forms import UserRegistrationForm
 
+@login_required(login_url="/login")
 def home(request):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('login'))
-
 	return render(request, 'home.html')
 
 def register(request):
