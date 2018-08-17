@@ -47,7 +47,7 @@ def register(request):
 		confirm 	=  userObj['confirm']
 
 		err_msg = ""
-		if len(username) == 0 or len(email) == 0 or len(password) == 0 or len(confirm) == 0:
+		if not (username and email and password and confirm):
 			err_msg = "Please complete all fields in the form."
 		elif User.objects.filter(username=username).first() is not None:
 			err_msg = "Username already exists."
@@ -60,7 +60,7 @@ def register(request):
 		elif password is None: # TO DO: Add password validation here
 			pass
 
-		if err_msg != "":
+		if err_msg:
 			context = {
 				"is_register": True,
 				"error": err_msg
@@ -72,4 +72,8 @@ def register(request):
 		login(request, user)
 		return HttpResponseRedirect('/')
 
-	return HttpResponseRedirect(reverse('login'))
+	context = {
+		"is_register": True,
+		"error": "Please complete all fields in the form."
+	}
+	return render(request, 'registration/login.html', context=context)
