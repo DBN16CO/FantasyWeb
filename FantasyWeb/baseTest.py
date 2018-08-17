@@ -36,7 +36,8 @@ class BaseTestCase(TestCase):
 		self.assertTrue("register-form-link" in str(response.content))
 
 	def login_user1(self):
-		self.client.login(username='user1', password='user1pwd')
+		hard_coded_password = 'user1pwd'
+		self.client.login(username='user1', password=hard_coded_password)
 
 	def logout_user1(self):
 		self.client.logout()

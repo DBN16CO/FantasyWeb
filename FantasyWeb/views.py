@@ -47,7 +47,7 @@ def register(request):
 		confirm 	=  userObj['confirm']
 
 		err_msg = ""
-		if username == "" or email == "" or password == "" or confirm == "":
+		if len(username) == 0 or len(email) == 0 or len(password) == 0 or len(confirm) == 0:
 			err_msg = "Please complete all fields in the form."
 		elif User.objects.filter(username=username).first() is not None:
 			err_msg = "Username already exists."
@@ -57,7 +57,7 @@ def register(request):
 			err_msg = "Please enter a valid email address."
 		elif  password != confirm:
 			err_msg = "The password fields must match."
-		elif password == None: # TO DO: Add password validation here
+		elif password is None: # TO DO: Add password validation here
 			pass
 
 		if err_msg != "":
