@@ -7,18 +7,32 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .forms import UserRegistrationForm
 from League.models import League_Member
+from .forms import UserRegistrationForm
 
 @login_required(login_url="/login")
 def home(request):
 	username = request.user.username
 
-	#user_leagues = League_Member.objects.filter(member=username)
+	user_leagues = League_Member.objects.filter(member__username=username)
+	leagues = []
+
+	for league_db in user_leagues:
+		lm_val = {
+			"league_id": league_db.league.id,
+			"league_name": league_db.league.name,
+			"is_commish": league_db.is_commish,
+			"team_name": league_db.team_name,
+			"owner_limit": league_db.league.owner_limit
+		}
+		leagues.append(lm_val)
 
 
+	context = {
+		"leagues": leagues
+	}
 
-	return render(request, 'home.html')
+	return render(request, 'home.html', context=context)
 
 def register(request):
 	if request.method != 'POST':

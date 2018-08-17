@@ -11,7 +11,11 @@ class League(models.Model):
 class League_Member(models.Model):
 	league 		= models.ForeignKey(League, on_delete=models.CASCADE)
 	member		= models.ForeignKey(User, on_delete=models.CASCADE)
+	team_name   = models.CharField(max_length=25)
 	is_commish	= models.BooleanField(default=False)
+
+	class Meta:
+		unique_together = (('league', 'member'),('league', 'team_name'))
 
 	def __str__(self):
 		return self.league.name + "(" + self.member.username + ")"
