@@ -2,3 +2,11 @@ body {
     padding-left: 15px;
     padding-top: 70px;
 }
+
+.bg-green {
+	background-color: green;
+}
+
+.active {
+	background-color: green !important;
+}

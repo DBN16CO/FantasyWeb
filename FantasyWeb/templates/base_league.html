@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Fantasy Web - League{% endblock %}
+
+{% block content %}
+{% load static %}
+<!--<script src="{% static 'js/league.js' %}"></script>
+<link href="{% static 'css/league.css' %}" rel="stylesheet" type="text/css"> -->
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-2">
+			<div class="pb-2 mt-4 mb-5"></div>
+			<nav class="g-faded sidebar">
+				<ul class="nav nav-pills flex-column">
+					<li class="nav-item">
+						<a class="nav-link active" href="#">Standings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">My Team</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Schedule</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Free Agents</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Trade Block</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Draft History</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Forums</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Settings</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-8">
+			<div class="pb-2 mt-4 mb-2 border-bottom"><h2>League { league_name }</h2></div>
+			<br />
+			{% block league_content %}
+			{% endblock %}
+		</div>
+	</div>
+</div>
+{% endblock %}
