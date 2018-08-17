@@ -57,7 +57,7 @@ def register(request):
 			err_msg = "Please enter a valid email address."
 		elif  password != confirm:
 			err_msg = "The password fields must match."
-		elif password == "": # TO DO: Add password validation here
+		elif password == None: # TO DO: Add password validation here
 			pass
 
 		if err_msg != "":
