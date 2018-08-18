@@ -1,4 +1,4 @@
-from League.models import League, League_Member
+from League.models import League_Member
 from FantasyWeb.baseTest import BaseTestCase
 
 class LeagueDraftHistoryTestCase(BaseTestCase):
@@ -25,7 +25,7 @@ class LeagueDraftHistoryTestCase(BaseTestCase):
 	def test003_league_draft_history_page_view(self):
 		"""Tests how the server handles viewing the league draft history screen without being a member"""
 		self.add_league_member(self.user, self.league, "team1")
-		
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 

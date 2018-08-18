@@ -1,4 +1,4 @@
-from League.models import League, League_Member
+from League.models import League_Member
 from FantasyWeb.baseTest import BaseTestCase
 
 class LeagueMyTeamTestCase(BaseTestCase):
@@ -25,7 +25,7 @@ class LeagueMyTeamTestCase(BaseTestCase):
 	def test003_league_my_team_page_view(self):
 		"""Tests how the server handles viewing the league my team screen without being a member"""
 		self.add_league_member(self.user, self.league, "team1")
-		
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 

@@ -11,7 +11,8 @@ def get_league_standings(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "standings", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "standings", "is_commish": league_member.is_commish}
 	return render(request, 'league_standings.html', context=context)
 
 
@@ -102,5 +103,6 @@ def get_league_commish_settings(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "commish_settings", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "commish_settings", "is_commish": league_member.is_commish}
 	return render(request, 'league_commish_settings.html', context=context)

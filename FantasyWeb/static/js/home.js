@@ -4,8 +4,8 @@ $(document).ready(function(){
 		"paging": false,
 		"info": false,
 		"oLanguage": {
-        	"sEmptyTable": "You are not in any Leagues"
-    	}
-	}
-	$('#leagues-table').DataTable(dtSettings);
+			"sEmptyTable": "You are not in any Leagues"
+		}
+	};
+	$("#leagues-table").DataTable(dtSettings);
 });

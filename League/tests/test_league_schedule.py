@@ -1,4 +1,4 @@
-from League.models import League, League_Member
+from League.models import League_Member
 from FantasyWeb.baseTest import BaseTestCase
 
 class LeagueScheduleTestCase(BaseTestCase):
