@@ -4,3 +4,4 @@ omit = *__init__.py*
        *settings.py*
        *wsgi.py*
        *.pyc*
+       *test_*
