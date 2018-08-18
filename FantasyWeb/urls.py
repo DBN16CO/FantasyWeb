@@ -26,5 +26,4 @@ urlpatterns = [
 	url(r'^logout/$', LogoutView.as_view(), name='logout'),
 	url(r'^admin/', admin.site.urls),
 	path('league/', include('League.urls')),
-	path('admin/', admin.site.urls)
 ]

@@ -1,3 +1,11 @@
 $(document).ready(function(){
-	$('#test-table').DataTable({searching: false, paging: false, info: false});
+	var dtSettings = {
+		"searching": false,
+		"paging": false,
+		"info": false,
+		"oLanguage": {
+        	"sEmptyTable": "You are not in any Leagues"
+    	}
+	}
+	$('#test-table').DataTable(dtSettings);
 });

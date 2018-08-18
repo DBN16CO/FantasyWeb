@@ -11,38 +11,103 @@
 	<div class="row">
 		<div class="col-xs-2">
 			<div class="pb-2 mt-4 mb-5"></div>
-			<nav class="g-faded sidebar">
+			<nav class="g-faded sidebar league-sidebar">
 				<ul class="nav nav-pills flex-column">
+					{% if active == "standings" %}
 					<li class="nav-item">
-						<a class="nav-link active" href="#">Standings</a>
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}">Standings</a>
 					</li>
+					{% else %}
 					<li class="nav-item">
-						<a class="nav-link" href="#">My Team</a>
+						<a class="nav-link white-text" href="/league/{{league_id}}">Standings</a>
 					</li>
+					{% endif %}
+
+					{% if active == "my_team" %}
 					<li class="nav-item">
-						<a class="nav-link" href="#">Schedule</a>
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/my_team">My Team</a>
 					</li>
+					{% else %}
 					<li class="nav-item">
-						<a class="nav-link" href="#">Free Agents</a>
+						<a class="nav-link white-text" href="/league/{{league_id}}/my_team">My Team</a>
 					</li>
+					{% endif %}
+
+					{% if active == "schedule" %}
 					<li class="nav-item">
-						<a class="nav-link" href="#">Trade Block</a>
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/schedule">Schedule</a>
 					</li>
+					{% else %}
 					<li class="nav-item">
-						<a class="nav-link" href="#">Draft History</a>
+						<a class="nav-link white-text" href="/league/{{league_id}}/schedule">Schedule</a>
 					</li>
+					{% endif %}
+
+					{% if active == "free_agents" %}
 					<li class="nav-item">
-						<a class="nav-link" href="#">Forums</a>
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/free_agents">Free Agents</a>
 					</li>
+					{% else %}
 					<li class="nav-item">
-						<a class="nav-link" href="#">Settings</a>
+						<a class="nav-link white-text" href="/league/{{league_id}}/free_agents">Free Agents</a>
 					</li>
+					{% endif %}
+
+					{% if active == "trade_block" %}
+					<li class="nav-item">
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/trade_block">Trade Block</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link white-text" href="/league/{{league_id}}/trade_block">Trade Block</a>
+					</li>
+					{% endif %}
+
+					{% if active == "draft_history" %}
+					<li class="nav-item">
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/draft_history">Draft History</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link white-text" href="/league/{{league_id}}/draft_history">Draft History</a>
+					</li>
+					{% endif %}
+
+					{% if active == "forums" %}
+					<li class="nav-item">
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/forums">Forums</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link white-text" href="/league/{{league_id}}/forums">Forums</a>
+					</li>
+					{% endif %}
+
+					{% if active == "settings" %}
+					<li class="nav-item">
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/settings">Settings</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link white-text" href="/league/{{league_id}}/settings">Settings</a>
+					</li>
+					{% endif %}
+
+					{% if active == "commish_settings" and is_commish %}
+					<li class="nav-item">
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/commish_settings">Commish Settings</a>
+					</li>
+					{% elif is_commish %}
+					<li class="nav-item">
+						<a class="nav-link white-text" href="/league/{{league_id}}/commish_settings">Commish Settings</a>
+					</li>
+					{% endif %}
 				</ul>
 			</nav>
 		</div>
 		<div class="col-md-1"></div>
 		<div class="col-md-8">
-			<div class="pb-2 mt-4 mb-2 border-bottom"><h2>League { league_name }</h2></div>
+			<div class="pb-2 mt-4 mb-2 border-bottom"><h2>League: {{ league_name }}</h2></div>
 			<br />
 			{% block league_content %}
 			{% endblock %}

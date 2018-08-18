@@ -7,6 +7,16 @@ body {
 	background-color: green;
 }
 
-.active {
-	background-color: green !important;
+.league-active {
+	background-color: #663300 !important;
+}
+
+.league-sidebar {
+	background-color: green;
+	border-color: blue;
+	line-height: 2.5;
+}
+
+.white-text {
+	color: white !important;
 }

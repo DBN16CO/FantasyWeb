@@ -1,3 +1,9 @@
-from django.test import TestCase
+from League.models import League, League_Member
+from FantasyWeb.baseTest import BaseTestCase
 
-# Create your tests here.
+class LeagueStandingsTestCase(BaseTestCase):
+	def setUp(self):
+		self.response = None
+		self.test_url = "/"
+
+		self.login_user1()
