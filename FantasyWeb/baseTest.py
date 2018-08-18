@@ -1,6 +1,7 @@
 import time
 
 from django.contrib.auth.models import User
+from League.models import League, League_Member
 from django.test.client import Client
 from django.test import TestCase
 
@@ -9,6 +10,8 @@ class BaseTestCase(TestCase):
 	def setUpClass(cls):
 		cls.client = Client()
 		cls.user = User.objects.create_user('user1', 'user@email.com', 'user1pwd')
+
+		cls.league = League.objects.create(name="league_name1", owner_limit=10)
 
 		if cls is not BaseTestCase and cls.setUp is not BaseTestCase.setUp:
 		   orig_setUp = cls.setUp
@@ -19,7 +22,8 @@ class BaseTestCase(TestCase):
 
 	@classmethod
 	def tearDownClass(cls):
-		pass
+		cls.user.delete()
+		cls.league.delete()
 
 	def setUp(self):
 		print("=====   Testing test case: " + self.id() + " =====")
@@ -41,3 +45,6 @@ class BaseTestCase(TestCase):
 
 	def logout_user1(self):
 		self.client.logout()
+
+	def add_league_member(self, user, league, team_name, commish=False):
+		return League_Member.objects.create(league=league, member=user, team_name=team_name, is_commish=commish)

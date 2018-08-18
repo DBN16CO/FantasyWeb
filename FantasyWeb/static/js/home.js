@@ -7,5 +7,5 @@ $(document).ready(function(){
         	"sEmptyTable": "You are not in any Leagues"
     	}
 	}
-	$('#test-table').DataTable(dtSettings);
+	$('#leagues-table').DataTable(dtSettings);
 });
