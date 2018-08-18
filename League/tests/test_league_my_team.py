@@ -1,5 +1,4 @@
-from League.models import League_Member
-from FantasyWeb.baseTest import BaseTestCase
+from FantasyWeb.baseTest import BaseTestCase, add_league_member
 
 class LeagueMyTeamTestCase(BaseTestCase):
 	def setUp(self):
@@ -10,7 +9,7 @@ class LeagueMyTeamTestCase(BaseTestCase):
 
 	def test001_league_my_team_without_login(self):
 		"""Tests how the server handles viewing the league my team screen without first logging in"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 		self.logout_user1()
 		self.helper_test_unauthenticated_page_access(self.test_url)
 
@@ -24,7 +23,7 @@ class LeagueMyTeamTestCase(BaseTestCase):
 
 	def test003_league_my_team_page_view(self):
 		"""Tests how the server handles viewing the league my team screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
@@ -33,13 +32,14 @@ class LeagueMyTeamTestCase(BaseTestCase):
 		self.assertTrue('<p>My Team</p>' in content)
 		self.assertFalse('Commish Settings' in content)
 
-		my_team_nav_active = '<a class="nav-link white-text league-active" href="/league/%s/my_team">My Team</a>' % self.league.pk
+		my_team_nav_active = '<a class="nav-link white-text league-active" '
+		my_team_nav_active += 'href="/league/%s/my_team">My Team</a>' % self.league.pk
 		self.assertTrue(my_team_nav_active in content)
 
 	def test004_league_my_team_page_view_as_commish(self):
 		"""Tests how the server handles viewing the league my team screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1", commish=True)
-		
+		add_league_member(self.user, self.league, "team1", commish=True)
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 
@@ -47,5 +47,6 @@ class LeagueMyTeamTestCase(BaseTestCase):
 		self.assertTrue('<p>My Team</p>' in content)
 		self.assertTrue('Commish Settings' in content)
 
-		my_team_nav_active = '<a class="nav-link white-text league-active" href="/league/%s/my_team">My Team</a>' % self.league.pk
+		my_team_nav_active = '<a class="nav-link white-text league-active" '
+		my_team_nav_active += 'href="/league/%s/my_team">My Team</a>' % self.league.pk
 		self.assertTrue(my_team_nav_active in content)

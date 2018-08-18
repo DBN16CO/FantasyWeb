@@ -1,9 +1,14 @@
 import time
 
 from django.contrib.auth.models import User
-from League.models import League, League_Member
 from django.test.client import Client
 from django.test import TestCase
+from League.models import League, League_Member
+
+
+def add_league_member(user, league, team_name, commish=False):
+	return League_Member.objects.create(league=league, member=user, team_name=team_name, is_commish=commish)
+
 
 class BaseTestCase(TestCase):
 	@classmethod
@@ -45,6 +50,3 @@ class BaseTestCase(TestCase):
 
 	def logout_user1(self):
 		self.client.logout()
-
-	def add_league_member(self, user, league, team_name, commish=False):
-		return League_Member.objects.create(league=league, member=user, team_name=team_name, is_commish=commish)

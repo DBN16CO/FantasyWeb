@@ -1,5 +1,4 @@
-from League.models import League_Member
-from FantasyWeb.baseTest import BaseTestCase
+from FantasyWeb.baseTest import BaseTestCase, add_league_member
 
 class LeagueScheduleTestCase(BaseTestCase):
 	def setUp(self):
@@ -10,7 +9,7 @@ class LeagueScheduleTestCase(BaseTestCase):
 
 	def test001_league_schedule_without_login(self):
 		"""Tests how the server handles viewing the league schedule screen without first logging in"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 		self.logout_user1()
 		self.helper_test_unauthenticated_page_access(self.test_url)
 
@@ -24,8 +23,8 @@ class LeagueScheduleTestCase(BaseTestCase):
 
 	def test003_league_schedule_page_view(self):
 		"""Tests how the server handles viewing the league schedule screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1")
-		
+		add_league_member(self.user, self.league, "team1")
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 
@@ -33,13 +32,14 @@ class LeagueScheduleTestCase(BaseTestCase):
 		self.assertTrue('<p>Schedule</p>' in content)
 		self.assertFalse('Commish Settings' in content)
 
-		schedule_nav_active = '<a class="nav-link white-text league-active" href="/league/%s/schedule">Schedule</a>' % self.league.pk
+		schedule_nav_active = '<a class="nav-link white-text league-active" '
+		schedule_nav_active += 'href="/league/%s/schedule">Schedule</a>' % self.league.pk
 		self.assertTrue(schedule_nav_active in content)
 
 	def test004_league_schedule_page_view_as_commish(self):
 		"""Tests how the server handles viewing the league schedule screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1", commish=True)
-		
+		add_league_member(self.user, self.league, "team1", commish=True)
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 
@@ -47,5 +47,6 @@ class LeagueScheduleTestCase(BaseTestCase):
 		self.assertTrue('<p>Schedule</p>' in content)
 		self.assertTrue('Commish Settings' in content)
 
-		schedule_nav_active = '<a class="nav-link white-text league-active" href="/league/%s/schedule">Schedule</a>' % self.league.pk
+		schedule_nav_active = '<a class="nav-link white-text league-active" '
+		schedule_nav_active += 'href="/league/%s/schedule">Schedule</a>' % self.league.pk
 		self.assertTrue(schedule_nav_active in content)

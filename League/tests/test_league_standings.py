@@ -1,5 +1,4 @@
-from League.models import League_Member
-from FantasyWeb.baseTest import BaseTestCase
+from FantasyWeb.baseTest import BaseTestCase, add_league_member
 
 class LeagueStandingsTestCase(BaseTestCase):
 	def setUp(self):
@@ -10,7 +9,7 @@ class LeagueStandingsTestCase(BaseTestCase):
 
 	def test001_league_standings_without_login(self):
 		"""Tests how the server handles viewing the league standings screen without first logging in"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 		self.logout_user1()
 		self.helper_test_unauthenticated_page_access(self.test_url)
 
@@ -24,8 +23,8 @@ class LeagueStandingsTestCase(BaseTestCase):
 
 	def test003_league_standings_page_view(self):
 		"""Tests how the server handles viewing the league standings screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1")
-		
+		add_league_member(self.user, self.league, "team1")
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 
@@ -38,8 +37,8 @@ class LeagueStandingsTestCase(BaseTestCase):
 
 	def test004_league_standings_page_view_as_commish(self):
 		"""Tests how the server handles viewing the league standings screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1", commish=True)
-		
+		add_league_member(self.user, self.league, "team1", commish=True)
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 

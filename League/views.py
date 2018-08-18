@@ -24,7 +24,8 @@ def get_league_my_team(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "my_team", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "my_team", "is_commish": league_member.is_commish}
 	return render(request, 'league_my_team.html', context=context)
 
 @login_required(login_url="/login")
@@ -35,7 +36,8 @@ def get_league_schedule(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "schedule", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "schedule", "is_commish": league_member.is_commish}
 	return render(request, 'league_schedule.html', context=context)
 
 @login_required(login_url="/login")
@@ -46,7 +48,8 @@ def get_league_free_agents(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "free_agents", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "free_agents", "is_commish": league_member.is_commish}
 	return render(request, 'league_free_agents.html', context=context)
 
 @login_required(login_url="/login")
@@ -57,7 +60,8 @@ def get_league_trade_block(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "trade_block", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "trade_block", "is_commish": league_member.is_commish}
 	return render(request, 'league_trade_block.html', context=context)
 
 @login_required(login_url="/login")
@@ -68,7 +72,8 @@ def get_league_draft_history(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "draft_history", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "draft_history", "is_commish": league_member.is_commish}
 	return render(request, 'league_draft_history.html', context=context)
 
 @login_required(login_url="/login")
@@ -79,7 +84,8 @@ def get_league_forums(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "forums", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "forums", "is_commish": league_member.is_commish}
 	return render(request, 'league_forums.html', context=context)
 
 @login_required(login_url="/login")
@@ -90,7 +96,8 @@ def get_league_settings(request, league_id):
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name, "active": "settings", "is_commish": league_member.is_commish}
+	context = {"league_id": league_id, "league_name": league.name,
+	           "active": "settings", "is_commish": league_member.is_commish}
 	return render(request, 'league_settings.html', context=context)
 
 @login_required(login_url="/login")
@@ -98,7 +105,8 @@ def get_league_commish_settings(request, league_id):
 	league_member = get_league_member(request.user, league_id)
 	if not league_member:
 		return HttpResponseRedirect('/')
-	elif not league_member.is_commish:
+
+	if not league_member.is_commish:
 		return HttpResponseRedirect('/league/%s' % league_id)
 
 	league = get_league(league_id)

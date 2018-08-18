@@ -1,5 +1,4 @@
-from League.models import League_Member
-from FantasyWeb.baseTest import BaseTestCase
+from FantasyWeb.baseTest import BaseTestCase, add_league_member
 
 class LeagueCommishSettingsTestCase(BaseTestCase):
 	def setUp(self):
@@ -10,7 +9,7 @@ class LeagueCommishSettingsTestCase(BaseTestCase):
 
 	def test001_league_commish_settings_without_login(self):
 		"""Tests how the server handles viewing the league commish settings screen without first logging in"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 		self.logout_user1()
 		self.helper_test_unauthenticated_page_access(self.test_url)
 
@@ -24,7 +23,7 @@ class LeagueCommishSettingsTestCase(BaseTestCase):
 
 	def test003_league_commish_settings_membership_no_commish(self):
 		"""Tests how the server handles viewing the league commish settings screen without being a commish"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
@@ -35,8 +34,8 @@ class LeagueCommishSettingsTestCase(BaseTestCase):
 
 	def test004_league_settings_page_view_as_commish(self):
 		"""Tests how the server handles viewing the league settings screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1", commish=True)
-		
+		add_league_member(self.user, self.league, "team1", commish=True)
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 
@@ -44,5 +43,6 @@ class LeagueCommishSettingsTestCase(BaseTestCase):
 		self.assertTrue('<p>Commish Settings</p>' in content)
 		self.assertTrue('Commish Settings' in content)
 
-		commish_settings_nav_active = '<a class="nav-link white-text league-active" href="/league/%s/commish_settings">Commish Settings</a>' % self.league.pk
+		commish_settings_nav_active = '<a class="nav-link white-text league-active" '
+		commish_settings_nav_active += 'href="/league/%s/commish_settings">Commish Settings</a>' % self.league.pk
 		self.assertTrue(commish_settings_nav_active in content)

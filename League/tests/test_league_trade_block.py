@@ -1,5 +1,4 @@
-from League.models import League_Member
-from FantasyWeb.baseTest import BaseTestCase
+from FantasyWeb.baseTest import BaseTestCase, add_league_member
 
 class LeagueTradeBlockTestCase(BaseTestCase):
 	def setUp(self):
@@ -10,7 +9,7 @@ class LeagueTradeBlockTestCase(BaseTestCase):
 
 	def test001_league_trade_block_without_login(self):
 		"""Tests how the server handles viewing the league trade block screen without first logging in"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 		self.logout_user1()
 		self.helper_test_unauthenticated_page_access(self.test_url)
 
@@ -24,7 +23,7 @@ class LeagueTradeBlockTestCase(BaseTestCase):
 
 	def test003_league_trade_block_page_view(self):
 		"""Tests how the server handles viewing the league trade block screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1")
+		add_league_member(self.user, self.league, "team1")
 
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
@@ -33,13 +32,14 @@ class LeagueTradeBlockTestCase(BaseTestCase):
 		self.assertTrue('<p>Trade Block</p>' in content)
 		self.assertFalse('Commish Settings' in content)
 
-		trade_block_nav_active = '<a class="nav-link white-text league-active" href="/league/%s/trade_block">Trade Block</a>' % self.league.pk
+		trade_block_nav_active = '<a class="nav-link white-text league-active" '
+		trade_block_nav_active += 'href="/league/%s/trade_block">Trade Block</a>' % self.league.pk
 		self.assertTrue(trade_block_nav_active in content)
 
 	def test004_league_trade_block_page_view_as_commish(self):
 		"""Tests how the server handles viewing the league trade block screen without being a member"""
-		self.add_league_member(self.user, self.league, "team1", commish=True)
-		
+		add_league_member(self.user, self.league, "team1", commish=True)
+
 		response = self.client.get(self.test_url, follow=True)
 		content = str(response.content)
 
@@ -47,5 +47,6 @@ class LeagueTradeBlockTestCase(BaseTestCase):
 		self.assertTrue('<p>Trade Block</p>' in content)
 		self.assertTrue('Commish Settings' in content)
 
-		trade_block_nav_active = '<a class="nav-link white-text league-active" href="/league/%s/trade_block">Trade Block</a>' % self.league.pk
+		trade_block_nav_active = '<a class="nav-link white-text league-active" '
+		trade_block_nav_active += 'href="/league/%s/trade_block">Trade Block</a>' % self.league.pk
 		self.assertTrue(trade_block_nav_active in content)
