@@ -1,1 +1,1 @@
-web: gunicorn FantasyWeb/FantasyWeb:wsgi
+web: gunicorn FantasyWeb:wsgi
