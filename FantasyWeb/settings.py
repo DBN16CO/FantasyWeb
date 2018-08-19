@@ -134,7 +134,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-try:
-    from .localsettings import *
-except Exception:
-    django_heroku.settings(locals())
+if not os.getenv('TRAVIS', None):
+    try:
+        from .localsettings import *
+    except Exception:
+        django_heroku.settings(locals())
