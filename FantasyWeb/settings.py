@@ -139,3 +139,8 @@ if not os.getenv('TRAVIS', None):
         from .localsettings import *
     except Exception:
         django_heroku.settings(locals())
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    DEBUG = True
