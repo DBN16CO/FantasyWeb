@@ -7,12 +7,44 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from League.models import League_Member
-from .forms import UserRegistrationForm
+from League.models import League, League_Member
+from .forms import UserRegistrationForm, HomePageForm, CreateLeagueForm
 
 @login_required(login_url="/login")
 def home(request):
 	username = request.user.username
+	user = User.objects.filter(username=username).first()
+	context = {}
+
+	# First process any forms
+	if request.method == 'POST':
+		context['is_form_request'] = True
+		context['form_success'] = False
+
+		form = HomePageForm(request.POST)
+		if form.is_valid():
+			data = form.cleaned_data
+			if data['form_type'] == 'create-league-form':
+				form = CreateLeagueForm(request.POST)
+				if form.is_valid():
+					data = form.cleaned_data
+					if League_Member.objects.filter(member__username=username,
+													league__name=data['league_name']).first() is not None:
+						context["error"] = "You are already in a league with this name"
+					else:
+						league = League(name=data['league_name'], owner_limit=data['num_players'])
+						league.save()
+						league_member = League_Member(
+							league=league,
+							member=user,
+							team_name="%s's team" % username,
+							is_commish=True
+						)
+						league_member.save()
+						context['form_success'] = True
+
+		# If form was not valid, errors will now be within context
+		context['form'] = form
 
 	user_leagues = League_Member.objects.filter(member__username=username)
 	leagues = []
@@ -27,10 +59,7 @@ def home(request):
 		}
 		leagues.append(lm_val)
 
-
-	context = {
-		"leagues": leagues
-	}
+	context["leagues"] = leagues
 
 	return render(request, 'home.html', context=context)
 
