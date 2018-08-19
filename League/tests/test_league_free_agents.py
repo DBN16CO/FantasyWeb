@@ -1,4 +1,4 @@
-from FantasyWeb.baseTest import BaseTestCase, add_league_member
+from FantasyWeb.baseTest import BaseTestCase, add_league_member, is_on_page
 
 class LeagueFreeAgentsTestCase(BaseTestCase):
 	def setUp(self):
@@ -16,37 +16,32 @@ class LeagueFreeAgentsTestCase(BaseTestCase):
 	def test002_league_free_agents_no_membership(self):
 		"""Tests how the server handles viewing the league free agents screen without being a member"""
 		response = self.client.get(self.test_url, follow=True)
-		content = str(response.content)
 
-		self.assertFalse('League: league_name1' in content)
-		self.assertTrue('Fantasy Web - Home' in content)
+		self.assertFalse(is_on_page(response, 'League: league_name1'))
+		self.assertTrue(is_on_page(response, 'Fantasy Web - Home'))
 
 	def test003_league_free_agents_page_view(self):
 		"""Tests how the server handles viewing the league free agents screen without being a member"""
 		add_league_member(self.user, self.league, "team1")
-
 		response = self.client.get(self.test_url, follow=True)
-		content = str(response.content)
 
-		self.assertTrue('League: league_name1' in content)
-		self.assertTrue('<p>Free Agents</p>' in content)
-		self.assertFalse('Commish Settings' in content)
+		self.assertTrue(is_on_page(response, 'League: league_name1'))
+		self.assertTrue(is_on_page(response, '<p>Free Agents</p>'))
+		self.assertFalse(is_on_page(response, 'Commish Settings'))
 
 		free_agents_nav_active = '<a class="nav-link white-text league-active" '
 		free_agents_nav_active += 'href="/league/%s/free_agents">Free Agents</a>' % self.league.pk
-		self.assertTrue(free_agents_nav_active in content)
+		self.assertTrue(is_on_page(response, free_agents_nav_active))
 
 	def test004_league_free_agents_page_view_as_commish(self):
 		"""Tests how the server handles viewing the league free agents screen without being a member"""
 		add_league_member(self.user, self.league, "team1", commish=True)
-
 		response = self.client.get(self.test_url, follow=True)
-		content = str(response.content)
 
-		self.assertTrue('League: league_name1' in content)
-		self.assertTrue('<p>Free Agents</p>' in content)
-		self.assertTrue('Commish Settings' in content)
+		self.assertTrue(is_on_page(response, 'League: league_name1'))
+		self.assertTrue(is_on_page(response, '<p>Free Agents</p>'))
+		self.assertTrue(is_on_page(response, 'Commish Settings'))
 
 		free_agents_nav_active = '<a class="nav-link white-text league-active" '
 		free_agents_nav_active += 'href="/league/%s/free_agents">Free Agents</a>' % self.league.pk
-		self.assertTrue(free_agents_nav_active in content)
+		self.assertTrue(is_on_page(response, free_agents_nav_active))

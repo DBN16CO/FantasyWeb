@@ -10,6 +10,12 @@ def add_league_member(user, league, team_name, commish=False):
 	return League_Member.objects.create(league=league, member=user, team_name=team_name, is_commish=commish)
 
 
+def is_on_page(response, text):
+	content = str(response.content)
+
+	return text in content
+
+
 class BaseTestCase(TestCase):
 	@classmethod
 	def setUpClass(cls):
