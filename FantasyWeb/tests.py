@@ -1,3 +1,5 @@
+import copy
+
 from League.models import League, League_Member
 from .baseTest import BaseTestCase
 
@@ -8,6 +10,12 @@ class HomeTestCase(BaseTestCase):
 		self.test_url = "/"
 
 		self.login_user1()
+
+		self.good_create_league_post_data = {
+			"form_type": "create-league-form",
+			"league_name": "test League 1",
+			"num_players": 10
+		}
 
 	def helper_basic_league_return(self):
 		self.assertTrue("leagues" in self.response.context, "Context does not contain 'leagues'")
@@ -47,3 +55,25 @@ class HomeTestCase(BaseTestCase):
 		self.assertTrue("test_league_1" in str(self.response.content))
 		self.assertTrue("user1 unique team (C)" in str(self.response.content), str(self.response.content))
 		self.assertEqual(str(self.response.content).count("<tr>"), 2)
+
+	def test004_create_league_invalid_data(self):
+		"""Tests that forms with invalid data for creating a league are handled properly"""
+		league_count = League.objects.count()
+
+		for key in ["league_name", "num_players"]:
+			bad_post_data = copy.deepcopy(self.good_create_league_post_data)
+			bad_post_data.pop(key, None)
+
+			self.response = self.client.post(self.test_url, bad_post_data)
+			self.assertEqual(league_count, League.objects.count())
+
+			self.assertTrue(self.good_create_league_post_data["league_name"] not in str(self.response.content))
+
+	def test005_create_league_valid(self):
+		"""Validates that a new league is created when proper league form data is sent"""
+		league_count = League.objects.count()
+
+		self.response = self.client.post(self.test_url, self.good_create_league_post_data)
+
+		self.assertEqual(League.objects.count(), league_count + 1)
+		self.assertTrue(self.good_create_league_post_data["league_name"] in str(self.response.content))
