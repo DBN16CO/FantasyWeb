@@ -112,5 +112,6 @@ def get_league_commish_settings(request, league_id):
 	league = get_league(league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
-	           "active": "commish_settings", "is_commish": league_member.is_commish}
+	           "active": "commish_settings", "invite_link": "https://asdfasdf.com/345343",
+	           "is_commish": league_member.is_commish}
 	return render(request, 'league_commish_settings.html', context=context)

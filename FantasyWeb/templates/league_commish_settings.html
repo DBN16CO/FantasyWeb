@@ -2,12 +2,22 @@
 
 {% block league_content %}
 {% load static %}
-<!--<script src="{% static 'js/league.js' %}"></script>
-<link href="{% static 'css/league.css' %}" rel="stylesheet" type="text/css"> -->
+
+<!-- <link href="{% static 'css/league.css' %}" rel="stylesheet" type="text/css"> -->
 
 <div id="content">
 	<p>Commish Settings</p>
-</div>
-			
 
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+		Invite Link
+		</div>
+		<div class="card-body">
+			<h5 class="card-title" id="invite-link">{{ invite_link }}</h5>
+			<button class="btn btn-success" id="copy-btn">Copy</button>
+		</div>
+	</div>
+</div>
+
+<script src="{% static 'js/commish_settings.js' %}"></script>
 {% endblock %}
