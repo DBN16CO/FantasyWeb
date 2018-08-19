@@ -137,3 +137,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+try:
+    from .localsettings import *
+except Exception:
+    pass
