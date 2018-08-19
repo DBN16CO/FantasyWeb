@@ -12,7 +12,7 @@
 	<button class="btn btn-primary create-league-btn" data-toggle="modal" data-target="#modal-create-league">Create League</button>
 	<br />
 	<br />
-	<table id="test-table" class="table table-striped table-bordered dataTable">
+	<table id="leagues-table" class="table table-striped table-bordered dataTable">
 		<thead>
 			<tr>
 				<th>League Name</th>
@@ -23,7 +23,7 @@
 		<tbody>
 			{% for league_data in leagues %}
 			<tr>
-				<td>{{ league_data.league_name }}</td>
+				<td><a style="text-decoration: underline;" href="/league/{{ league_data.league_id }}">{{ league_data.league_name }}</a></td>
 				<td>{{ league_data.team_name }}{% if league_data.is_commish %} (C){% endif %}</td>
 				<td>{{ league_data.owner_limit }}</td>
 			</tr>
