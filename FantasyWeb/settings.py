@@ -85,8 +85,6 @@ DATABASES = {
     }
 }
 
-django_heroku.settings(locals())
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -139,4 +137,4 @@ LOGOUT_REDIRECT_URL = '/'
 try:
     from .localsettings import *
 except Exception:
-    pass
+    django_heroku.settings(locals())
