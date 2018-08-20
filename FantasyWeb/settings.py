@@ -24,7 +24,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'u&9upxd!6in$!x#v54))9vp933zg1zd9ye6gd5(v*8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv('DEBUG', None) else False
 
-DEBUG_PROPAGATE_EXCEPTIONS = True
+DEBUG_PROPAGATE_EXCEPTIONS = True if os.getenv('DEBUG', None) else False
 
 ALLOWED_HOSTS = ["localhost", "fantasyfootballelites.herokuapp.com", "fantasyfootballelites.com"]
 
