@@ -43,15 +43,16 @@
             </div>
             <form method="POST">
             	{% csrf_token %}
+				<input type="hidden" name="form_type" value="create-league-form" id="id_form_type">
 	            <div class="modal-body mx-3">
 	                <div class="md-form mb-5 form-group">
 	            		<label data-error="wrong" data-success="right" for="league-name"><b>League Name</b></label>
-	                	<input type="text" id="league-name" class="form-control validate" placeholder="League Name" required>
+	                	<input type="text" name="league_name" id="league-name" class="form-control validate" placeholder="League Name" required>
 	                </div>
 
 	                <div class="md-form mb-4 form-group">
 	                	<label data-error="wrong" data-success="right" for="num-players"><b>Total Number of Players</b></label>
-	                    <input type="number" id="num-players" class="form-control validate" min="2" value="10" max="32" required>
+	                    <input type="number" name="num_players" id="num-players" class="form-control validate" min="2" value="10" max="32" required>
 	                </div>
 
 	            </div>
