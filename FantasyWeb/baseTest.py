@@ -22,7 +22,7 @@ class BaseTestCase(TestCase):
 		cls.client = Client()
 		cls.user = User.objects.create_user('user1', 'user@email.com', 'user1pwd')
 
-		cls.league = League.objects.create(name="league_name1", owner_limit=10)
+		cls.league = League.objects.create(name="league_name1", year_created=2018, invite_link='')
 
 		if cls is not BaseTestCase and cls.setUp is not BaseTestCase.setUp:
 		   orig_setUp = cls.setUp
