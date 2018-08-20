@@ -22,7 +22,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'u&9upxd!6in$!x#v54))9vp933zg1zd9ye6gd5(v*8
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG', False)
 
 ALLOWED_HOSTS = ["*"]
 
