@@ -1,3 +1,4 @@
+import datetime
 import re
 
 from django.contrib.auth import authenticate, login
@@ -7,7 +8,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from League.models import League, League_Member
+from League.models import League, League_Member, League_Setting
 from .forms import UserRegistrationForm, HomePageForm, CreateLeagueForm
 
 @login_required(login_url="/login")
@@ -32,8 +33,11 @@ def home(request):
 													league__name=data['league_name']).first() is not None:
 						context["error"] = "You are already in a league with this name"
 					else:
-						league = League(name=data['league_name'], owner_limit=data['num_players'])
+						year = datetime.date.today().year
+						league = League(name=data['league_name'], invite_link='', year_created=year)
 						league.save()
+						league_setting = League_Setting(league=league, name="owner_limit", value=data['num_players'])
+						league_setting.save()
 						league_member = League_Member(
 							league=league,
 							member=user,
@@ -50,12 +54,18 @@ def home(request):
 	leagues = []
 
 	for league_db in user_leagues:
+		owner_limit = League_Setting.objects.filter(league=league_db.league, name="owner_limit").first()
+		if owner_limit is None:
+			owner_limit = -1
+		else:
+			owner_limit = owner_limit.value
+
 		lm_val = {
 			"league_id": league_db.league.id,
 			"league_name": league_db.league.name,
 			"is_commish": league_db.is_commish,
 			"team_name": league_db.team_name,
-			"owner_limit": league_db.league.owner_limit
+			"owner_limit": int(owner_limit)
 		}
 		leagues.append(lm_val)
 
