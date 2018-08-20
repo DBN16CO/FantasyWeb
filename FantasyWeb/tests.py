@@ -1,6 +1,6 @@
 import copy
 
-from League.models import League, League_Member
+from League.models import League, League_Member, League_Setting
 from .baseTest import BaseTestCase
 
 
@@ -34,8 +34,10 @@ class HomeTestCase(BaseTestCase):
 
 	def test003_basic_one_leagues(self):
 		"""Tests that a league is returned if the user is part of one"""
-		new_league = League(name="test_league_1", owner_limit=10)
+		new_league = League(name="test_league_1", year_created=2018)
 		new_league.save()
+		new_league_setting = League_Setting(league=new_league, name="owner_limit", value=10)
+		new_league_setting.save()
 		new_league_member = League_Member(league=new_league, member=self.user, team_name="user1 unique team", is_commish=True)
 		new_league_member.save()
 
