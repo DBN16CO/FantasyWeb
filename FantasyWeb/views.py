@@ -1,5 +1,3 @@
-import datetime
-import uuid
 import re
 
 from django.contrib.auth import authenticate, login
@@ -9,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 
+from League.league_helper import create_new_league
 from League.models import League, League_Member, League_Setting
 from .forms import UserRegistrationForm, HomePageForm, CreateLeagueForm
 
@@ -41,32 +40,14 @@ def home(request):
 													league__name=data['league_name']).first() is not None:
 						context["error"] = "You are already in a league with this name"
 					else:
-						year = datetime.date.today().year
-						league = League(name=data['league_name'], invite_id=None, year_created=year)
-						league.save()
-
-						# Update the league's invite id
-						league.invite_id = "%s%s" % (league.pk, str(uuid.uuid4()))
-						league.save()
-
-						league_setting = League_Setting(league=league, name="owner_limit", value=data['num_players'])
-						league_setting.save()
-						league_member = League_Member(
-							league=league,
-							member=user,
-							team_name="%s's team" % username,
-							is_commish=True
-						)
-						league_member.save()
+						create_new_league(user, data['league_name'], data['num_players'])
 						context['form_success'] = True
 
 		# If form was not valid, errors will now be within context
 		context['form'] = form
 
-	user_leagues = League_Member.objects.filter(member__username=username)
 	leagues = []
-
-	for league_db in user_leagues:
+	for league_db in League_Member.objects.filter(member__username=username):
 		owner_limit = League_Setting.objects.filter(league=league_db.league, name="owner_limit").first()
 		if owner_limit is None:
 			owner_limit = -1

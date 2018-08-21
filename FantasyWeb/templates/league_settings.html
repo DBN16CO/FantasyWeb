@@ -8,12 +8,190 @@
 </div>
 
 <div class="container">
-	<div class="row">
-		{% if 'salary_cap' in league_settings  %}
-			<div class="col-md">
-				Salary Cap: {{ league_settings.salary_cap }}
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			Draft Settings
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-2">
+					Draft Type:
+				</div>
+				<div class="col-10">
+					{% if league_settings.league_type == "Dutch Auction" %}
+						Dutch Auction - Nominate players for blind auction.  At the end of the bidding period,
+						the winning owner receives the player at the cost of the 2nd place bid plus $1.
+					{% endif %}
+				</div>
 			</div>
-		{% endif %}
+			<hr/>
+			<div class="row">
+				{% if 'salary_cap' in league_settings  %}
+					<div class="col-3 d-flex justify-content-center">
+						Salary Cap: {{ league_settings.salary_cap }}
+					</div>
+				{% endif %}
+				{% if 'max_contract_years' in league_settings  %}
+					<div class="col-3 d-flex justify-content-center">
+						Maximum Contract Years:
+						{% if league_settings.max_contract_years == "-1" %}
+							No Limit
+						{% else %}
+							{{ league_settings.max_contract_years }}
+						{% endif %}
+					</div>
+				{% endif %}
+				{% if 'draft_period' in league_settings  %}
+					<div class="col-3 d-flex justify-content-center">
+						Draft Period: {{ league_settings.draft_period }}
+					</div>
+				{% endif %}
+				{% if 'nominations_per_period' in league_settings  %}
+					<div class="col-3 d-flex justify-content-center">
+						Nominations Per Draft Period: {{ league_settings.nominations_per_period }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<br/>
+	<br/>
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			Roster Settings
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-2">
+					Starting Lineup:
+				</div>
+				<div class="col-10">
+					{% if league_settings.starting_qb_count != "0" %}
+						{{ league_settings.starting_qb_count }} QB
+					{% endif %}
+					{% if league_settings.starting_rb_count != "0" %}
+						, {{ league_settings.starting_rb_count }} RB
+					{% endif %}
+					{% if league_settings.starting_wr_count != "0" %}
+						, {{ league_settings.starting_wr_count }} WR
+					{% endif %}
+					{% if league_settings.starting_te_count != "0" %}
+						, {{ league_settings.starting_te_count }} TE
+					{% endif %}
+					{% if league_settings.starting_k_count != "0" %}
+						, {{ league_settings.starting_k_count }} K
+					{% endif %}
+					{% if league_settings.starting_def_count != "0" %}
+						, {{ league_settings.starting_def_count }} DEF
+					{% endif %}
+					{% if league_settings.starting_db_count != "0" %}
+						, {{ league_settings.starting_db_count }} DB
+					{% endif %}
+					{% if league_settings.starting_lb_count != "0" %}
+						, {{ league_settings.starting_lb_count }} LB
+					{% endif %}
+					{% if league_settings.starting_DL_count != "0" %}
+						, {{ league_settings.starting_DL_count }} DL
+					{% endif %}
+				</div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-2">
+					Roster Limits:
+				</div>
+				<div class="col-10">
+					{% if league_settings.max_qb_count != "0" %}
+						{{ league_settings.max_qb_count }} QB
+					{% endif %}
+					{% if league_settings.max_rb_count != "0" %}
+						, {{ league_settings.max_rb_count }} RB
+					{% endif %}
+					{% if league_settings.max_wr_count != "0" %}
+						, {{ league_settings.max_wr_count }} WR
+					{% endif %}
+					{% if league_settings.max_te_count != "0" %}
+						, {{ league_settings.max_te_count }} TE
+					{% endif %}
+					{% if league_settings.max_k_count != "0" %}
+						, {{ league_settings.max_k_count }} K
+					{% endif %}
+					{% if league_settings.max_def_count != "0" %}
+						, {{ league_settings.max_def_count }} DEF
+					{% endif %}
+					{% if league_settings.max_db_count != "0" %}
+						, {{ league_settings.max_db_count }} DB
+					{% endif %}
+					{% if league_settings.max_lb_count != "0" %}
+						, {{ league_settings.max_lb_count }} LB
+					{% endif %}
+					{% if league_settings.max_DL_count != "0" %}
+						, {{ league_settings.max_DL_count }} DL
+					{% endif %}
+				</div>
+			</div>
+			<hr/>
+			{% if "flex_1" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 1:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_1 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_2" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 2:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_2 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_3" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 3:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_3 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_4" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 4:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_4 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_5" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 5:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_5 }}
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	<br/>
+	<br/>
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			Scoring Settings
+		</div>
+		<div class="card-body">
+			Coming Soon
+		</div>
 	</div>
 </div>
 {% endblock %}
