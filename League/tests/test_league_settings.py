@@ -1,5 +1,4 @@
 from FantasyWeb.baseTest import BaseTestCase, add_league_member, is_on_page
-from League.league_helper import set_league_defaults
 from League.models import League_Setting
 
 class LeagueSettingsTestCase(BaseTestCase):
@@ -25,7 +24,10 @@ class LeagueSettingsTestCase(BaseTestCase):
 	def test003_league_settings_page_view(self):
 		"""Tests how the server handles viewing the league settings screen without being a member"""
 		add_league_member(self.user, self.league, "team1")
-		set_league_defaults(self.league.id)
+		setting1 = League_Setting(league=self.league, name="property1", value="value1")
+		setting1.save()
+		setting2 = League_Setting(league=self.league, name="property2", value="value2")
+		setting2.save()
 		expected_league_settings = League_Setting.objects.filter(league=self.league)
 
 		response = self.client.get(self.test_url, follow=True)
