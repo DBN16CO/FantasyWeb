@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 
-from League.models import League_Member, League_Setting
+from League.models import League_Member
 from FantasyWeb.baseTest import BaseTestCase, is_on_page
 
 
