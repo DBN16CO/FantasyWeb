@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path
-from .views import home, register
+from .views import home, register, invite
 
 urlpatterns = [
 	url(r'^$', home),
@@ -26,4 +26,5 @@ urlpatterns = [
 	url(r'^logout/$', LogoutView.as_view(), name='logout'),
 	url(r'^admin/', admin.site.urls),
 	path('league/', include('League.urls')),
+    path('invite/<str:invite_id>', invite)
 ]

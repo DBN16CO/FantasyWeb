@@ -1,10 +1,12 @@
 import datetime
+import uuid
 import re
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib import messages
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -13,6 +15,13 @@ from .forms import UserRegistrationForm, HomePageForm, CreateLeagueForm
 
 @login_required(login_url="/login")
 def home(request):
+	# Redirect to invite_uri if that is where they came from
+	if 'invite_uri' in request.COOKIES:
+		next_uri = request.COOKIES['invite_uri']
+		response = HttpResponseRedirect(next_uri)
+		response.delete_cookie('invite_uri')
+		return response
+
 	username = request.user.username
 	user = User.objects.filter(username=username).first()
 	context = {}
@@ -34,8 +43,13 @@ def home(request):
 						context["error"] = "You are already in a league with this name"
 					else:
 						year = datetime.date.today().year
-						league = League(name=data['league_name'], invite_link='', year_created=year)
+						league = League(name=data['league_name'], invite_id='', year_created=year)
 						league.save()
+
+						# Update the league's invite id
+						league.invite_id = "%s%s" % (league.pk, str(uuid.uuid4()))
+						league.save()
+
 						league_setting = League_Setting(league=league, name="owner_limit", value=data['num_players'])
 						league_setting.save()
 						league_member = League_Member(
@@ -77,6 +91,10 @@ def register(request):
 	if request.method != 'POST':
 		return HttpResponseRedirect(reverse('login'))
 
+	next_uri = "/"
+	if 'invite_uri' in request.COOKIES:
+		next_uri = request.COOKIES['invite_uri']
+
 	form = UserRegistrationForm(request.POST)
 	if form.is_valid():
 		userObj 	= form.cleaned_data
@@ -109,10 +127,51 @@ def register(request):
 		User.objects.create_user(username, email, password)
 		user = authenticate(username = username, password = password)
 		login(request, user)
-		return HttpResponseRedirect('/')
+
+		# Create the redirect response to next URI
+		response = HttpResponseRedirect(next_uri)
+
+		# If redirecting to an invite link, request the cookie be deleted
+		if next_uri != "/":
+			response.delete_cookie('invite_uri')
+
+		return response
 
 	context = {
 		"is_register": True,
 		"error": "Please complete all fields in the form."
 	}
 	return render(request, 'registration/login.html', context=context)
+
+def invite(request, invite_id):
+	# Redirect with cookie to allow redirecting back to invite link
+	if not request.user.is_authenticated:
+		invite_uri = "/invite/%s" % invite_id
+		response = HttpResponseRedirect('/login/?next=%s' % invite_uri)
+		response.set_cookie('invite_uri', invite_uri, max_age=3600)
+		return response
+
+	user = request.user
+
+	# Check if a league has this invite id
+	league = League.objects.filter(invite_id=invite_id).first()
+	if not league:
+		return HttpResponse("Your invite link is invalid. Did you copy-paste it correctly?")
+
+	# Check if the user is already in the league
+	already_a_member = League_Member.objects.filter(league=league, member=user).first()
+	if already_a_member:
+		return HttpResponseRedirect('/league/%s/' % league.pk)
+
+	# Check to see if there is room in the league
+	owner_limit = League_Setting.objects.filter(league=league, name="owner_limit").first()
+	num_owners = League_Member.objects.filter(league=league).count()
+
+	if num_owners == owner_limit:
+		return HttpResponse("The League is full. Please yell at the commisioner of this league.")
+
+	# Save the new member and redirect to league page
+	member = League_Member(league=league, member=user, team_name="%s's team" % user.username)
+	member.save()
+
+	return HttpResponseRedirect('/league/%s/' % league.pk)
