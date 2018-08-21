@@ -6,6 +6,14 @@
 <div id="content">
 	<p>Settings</p>
 </div>
-			
 
+<div class="container">
+	<div class="row">
+		{% if 'salary_cap' in league_settings  %}
+			<div class="col-md">
+				Salary Cap: {{ league_settings.salary_cap }}
+			</div>
+		{% endif %}
+	</div>
+</div>
 {% endblock %}
