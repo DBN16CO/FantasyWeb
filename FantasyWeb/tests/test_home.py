@@ -1,7 +1,7 @@
 import copy
 
 from League.models import League, League_Member, League_Setting
-from .baseTest import BaseTestCase
+from FantasyWeb.baseTest import BaseTestCase
 
 
 class HomeTestCase(BaseTestCase):

@@ -3,7 +3,8 @@ from django.db import models
 
 class League(models.Model):
 	name 			= models.CharField(max_length=25)
-	invite_link 	= models.CharField(max_length=100)
+	invite_id 		= models.CharField(max_length=100, unique=True, null=True)
+	draft_complete 	= models.BooleanField(default=False)
 	year_created 	= models.IntegerField()
 
 	def __str__(self):
