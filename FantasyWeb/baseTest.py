@@ -3,7 +3,7 @@ import time
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.test import TestCase
-from League.models import League, League_Member
+from League.models import League, League_Member, League_Setting
 
 
 def add_league_member(user, league, team_name, commish=False):
@@ -22,7 +22,10 @@ class BaseTestCase(TestCase):
 		cls.client = Client()
 		cls.user = User.objects.create_user('user1', 'user@email.com', 'user1pwd')
 
-		cls.league = League.objects.create(name="league_name1", year_created=2018, invite_link='')
+		cls.league = League.objects.create(name="league_name1", year_created=2018, invite_id='abc123')
+
+		cls.league_owner_limit = League_Setting(league=cls.league, name="owner_limit", value=10)
+		cls.league_owner_limit.save()
 
 		if cls is not BaseTestCase and cls.setUp is not BaseTestCase.setUp:
 		   orig_setUp = cls.setUp
@@ -49,6 +52,9 @@ class BaseTestCase(TestCase):
 
 		self.assertTrue("login-form-link" in str(response.content))
 		self.assertTrue("register-form-link" in str(response.content))
+
+	def login(self, username, password):
+		self.client.login(username=username, password=password)
 
 	def login_user1(self):
 		hard_coded_password = 'user1pwd'

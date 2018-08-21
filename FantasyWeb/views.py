@@ -43,7 +43,7 @@ def home(request):
 						context["error"] = "You are already in a league with this name"
 					else:
 						year = datetime.date.today().year
-						league = League(name=data['league_name'], invite_id='', year_created=year)
+						league = League(name=data['league_name'], invite_id=None, year_created=year)
 						league.save()
 
 						# Update the league's invite id
@@ -164,10 +164,10 @@ def invite(request, invite_id):
 		return HttpResponseRedirect('/league/%s/' % league.pk)
 
 	# Check to see if there is room in the league
-	owner_limit = League_Setting.objects.filter(league=league, name="owner_limit").first()
+	owner_limit = League_Setting.objects.filter(league=league, name="owner_limit").first().value
 	num_owners = League_Member.objects.filter(league=league).count()
 
-	if num_owners == owner_limit:
+	if num_owners == int(owner_limit):
 		return HttpResponse("The League is full. Please yell at the commisioner of this league.")
 
 	# Save the new member and redirect to league page

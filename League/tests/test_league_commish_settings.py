@@ -37,6 +37,9 @@ class LeagueCommishSettingsTestCase(BaseTestCase):
 		self.assertTrue(is_on_page(response, '<p>Commish Settings</p>'))
 		self.assertTrue(is_on_page(response, 'Commish Settings'))
 
+		# abc123 invite id from baseTest league creation
+		self.assertTrue(is_on_page(response, 'https://fantasyfootballelites.com/invite/abc123'))
+
 
 		commish_settings_nav_active = '<a class="nav-link white-text league-active" '
 		commish_settings_nav_active += 'href="/league/%s/commish_settings">Commish Settings</a>' % self.league.pk
