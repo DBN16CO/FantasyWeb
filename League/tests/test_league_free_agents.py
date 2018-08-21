@@ -68,7 +68,7 @@ class LeagueFreeAgentsTestCase(BaseTestCase):
 		self.assertTrue(is_on_page(response, '<p>Free Agents</p>'))
 		self.assertFalse(is_on_page(response, 'Commish Settings'))
 		for _,v in displayed_player.items():
-			self.assertTrue(is_on_page(response, v))
+			self.assertTrue(is_on_page(response, v), v)
 
 		self.assertFalse(is_on_page(response, "Player_name_1"))
 		self.assertFalse(is_on_page(response, "fake school"))
