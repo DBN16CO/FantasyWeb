@@ -1,3 +1,4 @@
+import html.parser
 import time
 
 from django.contrib.auth.models import User
@@ -11,7 +12,9 @@ def add_league_member(user, league, team_name, commish=False):
 
 
 def is_on_page(response, text):
-	content = str(response.content)
+	html_parser = html.parser.HTMLParser()
+	unescaped = html_parser.unescape(str(response.content))
+	content = str(unescaped)
 
 	return text in content
 
