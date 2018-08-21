@@ -1,7 +1,6 @@
-import copy
 from django.contrib.auth.models import User
 
-from League.models import League, League_Member, League_Setting
+from League.models import League_Member, League_Setting
 from FantasyWeb.baseTest import BaseTestCase, is_on_page
 
 
@@ -15,7 +14,7 @@ class InviteTestCase(BaseTestCase):
 		self.logout_user1()
 
 		response = self.client.get(self.test_url + "/invite-id")
-		self.assertEquals(response.client.cookies['invite_uri'].value, "/invite/invite-id")
+		self.assertEqual(response.client.cookies['invite_uri'].value, "/invite/invite-id")
 
 	def test002_invite_invalid_link(self):
 		"""Tests that the server properly handles invalid link ids"""
@@ -44,7 +43,7 @@ class InviteTestCase(BaseTestCase):
 		self.league_owner_limit.value = 1
 		self.league_owner_limit.save()
 
-		new_user = User.objects.create_user('user2', 'user2@email.com', 'user2pwd')
+		User.objects.create_user('user2', 'user2@email.com', 'user2pwd')
 		self.login("user2", "user2pwd")
 
 		response = self.client.get(self.test_url + "/abc123")
@@ -56,12 +55,11 @@ class InviteTestCase(BaseTestCase):
 		"""Test that the server properly handles valid invite accept requests"""
 		self.logout_user1()
 
-		new_user = User.objects.create_user('user2', 'user2@email.com', 'user2pwd')
+		User.objects.create_user('user2', 'user2@email.com', 'user2pwd')
 		self.login("user2", "user2pwd")
 
 		response = self.client.get(self.test_url + "/abc123", follow=True)
 
 		self.assertTrue(is_on_page(response, "League: league_name1"))
 		self.assertTrue(is_on_page(response, "Standings"))
-
 	
