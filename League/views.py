@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from League.league_helper import get_league_member, get_league
+from League.league_helper import get_league_member, get_league, get_free_agents
 
 @login_required(login_url="/login")
 def get_league_standings(request, league_id):
@@ -47,8 +47,25 @@ def get_league_free_agents(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	player_list = get_free_agents(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name,
+	free_agents = []
+	for player in player_list:
+		p = {}
+		p["name"] = player.name
+		p["team"] = player.team
+		p["number"] = player.number
+		p["position"] = player.position
+		p["status"] = player.status
+		p["height"] = player.height
+		p["weight"] = player.weight
+		p["dob"] = player.dob
+		p["experience"] = player.experience
+		p["college"] = player.college
+
+		free_agents.append(p)
+
+	context = {"league_id": league_id, "league_name": league.name, "free_agents": free_agents,
 	           "active": "free_agents", "is_commish": league_member.is_commish}
 	return render(request, 'league_free_agents.html', context=context)
 
