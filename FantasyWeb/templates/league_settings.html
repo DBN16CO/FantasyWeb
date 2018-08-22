@@ -27,12 +27,12 @@
 			<hr/>
 			<div class="row">
 				{% if 'salary_cap' in league_settings  %}
-					<div class="col-3 d-flex justify-content-center">
+					<div class="col-3 d-flex justify-content-left">
 						Salary Cap: {{ league_settings.salary_cap }}
 					</div>
 				{% endif %}
 				{% if 'max_contract_years' in league_settings  %}
-					<div class="col-3 d-flex justify-content-center">
+					<div class="col-3 d-flex justify-content-left">
 						Maximum Contract Years:
 						{% if league_settings.max_contract_years == "-1" %}
 							No Limit
@@ -42,19 +42,35 @@
 					</div>
 				{% endif %}
 				{% if 'draft_period' in league_settings  %}
-					<div class="col-3 d-flex justify-content-center">
+					<div class="col-3 d-flex justify-content-left">
 						Draft Period: {{ league_settings.draft_period }}
 					</div>
 				{% endif %}
 				{% if 'nominations_per_period' in league_settings  %}
-					<div class="col-3 d-flex justify-content-center">
+					<div class="col-3 d-flex justify-content-left">
 						Nominations Per Draft Period: {{ league_settings.nominations_per_period }}
 					</div>
 				{% endif %}
 			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-sm-6">
+					Draft Start Time:
+					{% if league_settings.draft_time is not None %}
+						<div id="draft_time_value">{{ league_settings.draft_time }}</div>
+					{% else %}
+						Not yet set
+					{% endif %}
+				</div>
+				<div class="col-sm-6">
+					{% if league_settings.draft_time is not None %}
+						Time Until Draft:
+					{% endif %}
+					<div id="time_until_draft"></div>
+				</div>
+			</div>
 		</div>
 	</div>
-	<br/>
 	<br/>
 	<div class="card">
 		<div class="card-header text-white bg-secondary">
@@ -181,9 +197,17 @@
 					</div>
 				</div>
 			{% endif %}
+			<hr/>
+			<div class="row">
+				<div class="col-6">
+					Total Roster Limit: {{ league_settings.roster_size }}
+				</div>
+				<div class="col-6">
+					Injured Reserved Limit: {{ league_settings.ir_size }}
+				</div>
+			</div>
 		</div>
 	</div>
-	<br/>
 	<br/>
 	<div class="card">
 		<div class="card-header text-white bg-secondary">
@@ -194,4 +218,6 @@
 		</div>
 	</div>
 </div>
+
+<script src="{% static 'js/league_draft_start_timer.js' %}"></script>
 {% endblock %}

@@ -17,6 +17,12 @@
 		"max": 100,
 		"default": 18
 	},
+	"ir_size": {
+		"type": "int",
+		"min": -1,
+		"max": 100,
+		"default": 2
+	},
 	"max_contract_years": {
 		"type": "int",
 		"min": -1,
@@ -145,7 +151,7 @@
         "type": "float",
         "min": 0.5,
 		"max": 10080,
-        "default": 0
+        "default": 1440
     },
 	"nominations_per_period": {
         "type": "int",

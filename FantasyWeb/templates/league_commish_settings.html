@@ -2,6 +2,11 @@
 
 {% block league_content %}
 {% load static %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div id="content">
 	<p>Commish Settings</p>
@@ -15,7 +20,375 @@
 			<button class="btn btn-success" id="copy-btn">Copy</button>
 		</div>
 	</div>
+	<br/>
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			Draft Settings
+		</div>
+		<div class="card-body">
+			<form method="POST">
+		    	<div class="row">
+					{% csrf_token %}
+					<input type="hidden" name="form_type" value="set-draft-time-form">
+					<div class="col-sm-6">
+			            <div class="form-group">
+			                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+								<input type="text" name="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker1" required/>
+			                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+			                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			        <script type="text/javascript">
+			            $(function () {
+			                $('#datetimepicker1').datetimepicker();
+			            });
+			        </script>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						Current Draft Time:
+						{% if league_settings.draft_time is not None %}
+							<div id="draft_time_value">{{ league_settings.draft_time }}</div>
+						{% else %}
+							Not yet set
+						{% endif %}
+					</div>
+					<div class="col-sm-6">
+						{% if league_settings.draft_time is not None %}
+							Time Until Draft:
+						{% endif %}
+						<div id="time_until_draft"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2 d-flex justify-content-right">
+						<input type="submit" class="btn btn-primary" value="Update Draft Start Time" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<br/>
+	<form method="POST">
+		{% csrf_token %}
+		<input type="hidden" name="form_type" value="draft-settings-form">
+		<div class="card">
+			<div class="card-header text-white bg-secondary">
+				Draft Settings
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-2">
+						Draft Type:
+					</div>
+					<div class="col-10">
+						{% if league_settings.league_type == "Dutch Auction" %}
+							Dutch Auction - Nominate players for blind auction.  At the end of the bidding period,
+							the winning owner receives the player at the cost of the 2nd place bid plus $1.
+						{% endif %}
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="col-3 d-flex justify-content-center">
+						<label data-error="wrong" data-success="right" for="salary_cap">Salary Cap</label>
+	                    <input type="number" name="salary_cap" id="salary_cap" class="form-control validate"
+							min="{{ league_minimums.salary_cap }}" value="{{ league_settings.salary_cap }}"
+							max="{{ league_maximums.salary_cap }}" required>
+					</div>
+					<div class="col-3 d-flex justify-content-center">
+						<label data-error="wrong" data-success="right" for="max_contract_years">Max Contract Years</label>
+	                    <input type="number" name="max_contract_years" id="max_contract_years" class="form-control validate"
+							min="{{ league_minimums.max_contract_years }}" value="{{ league_settings.max_contract_years }}"
+							max="{{ league_maximums.max_contract_years }}" required>
+					</div>
+					<div class="col-3 d-flex justify-content-center">
+						<label data-error="wrong" data-success="right" for="draft_period">Draft Period (Minutes)</label>
+	                    <input type="number" name="draft_period" id="draft_period" class="form-control validate"
+							min="{{ league_minimums.draft_period }}" value="{{ league_settings.draft_period }}"
+							max="{{ league_maximums.draft_period }}" step="0.5" required>
+					</div>
+					<div class="col-3 d-flex justify-content-center">
+						<label data-error="wrong" data-success="right" for="nominations_per_period">Nomiations Per Period</label>
+	                    <input type="number" name="nominations_per_period" id="nominations_per_period" class="form-control validate"
+							min="{{ league_minimums.nominations_per_period }}" value="{{ league_settings.nominations_per_period }}"
+							max="{{ league_maximums.nominations_per_period }}" required>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2 d-flex justify-content-right">
+						<input type="submit" class="btn btn-primary" value="Update Draft Settings" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<br/>
+	<form method="POST">
+		{% csrf_token %}
+		<input type="hidden" name="form_type" value="draft-settings-form">
+		<div class="card">
+			<div class="card-header text-white bg-secondary">
+				Roster Settings
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-2">
+						Starting Lineup:
+					</div>
+					<div class="col-1"></div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_qb_count" id="starting_qb_count" class="form-control validate"
+								min="{{ league_minimums.starting_qb_count }}" value="{{ league_settings.starting_qb_count }}"
+								max="{{ league_maximums.starting_qb_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_qb_count">QB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_rb_count" id="starting_rb_count" class="form-control validate"
+								min="{{ league_minimums.starting_rb_count }}" value="{{ league_settings.starting_rb_count }}"
+								max="{{ league_maximums.starting_rb_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_rb_count">RB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_wr_count" id="starting_wr_count" class="form-control validate"
+								min="{{ league_minimums.starting_wr_count }}" value="{{ league_settings.starting_wr_count }}"
+								max="{{ league_maximums.starting_wr_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_wr_count">WR,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_te_count" id="starting_te_count" class="form-control validate"
+								min="{{ league_minimums.starting_te_count }}" value="{{ league_settings.starting_te_count }}"
+								max="{{ league_maximums.starting_te_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_te_count">TE,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_k_count" id="starting_k_count" class="form-control validate"
+								min="{{ league_minimums.starting_k_count }}" value="{{ league_settings.starting_k_count }}"
+								max="{{ league_maximums.starting_k_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_k_count">K,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_def_count" id="starting_def_count" class="form-control validate"
+								min="{{ league_minimums.starting_def_count }}" value="{{ league_settings.starting_def_count }}"
+								max="{{ league_maximums.starting_def_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_def_count">DEF,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_db_count" id="starting_db_count" class="form-control validate"
+								min="{{ league_minimums.starting_db_count }}" value="{{ league_settings.starting_db_count }}"
+								max="{{ league_maximums.starting_db_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_db_count">DB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_lb_count" id="starting_lb_count" class="form-control validate"
+								min="{{ league_minimums.starting_lb_count }}" value="{{ league_settings.starting_lb_count }}"
+								max="{{ league_maximums.starting_lb_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_lb_count">LB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="starting_dl_count" id="starting_dl_count" class="form-control validate"
+								min="{{ league_minimums.starting_dl_count }}" value="{{ league_settings.starting_dl_count }}"
+								max="{{ league_maximums.starting_dl_count }}" required>
+							<label data-error="wrong" data-success="right" for="starting_dl_count">DL</label>
+						</div>
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="col-2">
+						Roster Limits:
+					</div>
+					<div class="col-1"></div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_qb_count" id="max_qb_count" class="form-control validate"
+								min="{{ league_minimums.max_qb_count }}" value="{{ league_settings.max_qb_count }}"
+								max="{{ league_maximums.max_qb_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_qb_count">QB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_rb_count" id="max_rb_count" class="form-control validate"
+								min="{{ league_minimums.max_rb_count }}" value="{{ league_settings.max_rb_count }}"
+								max="{{ league_maximums.max_rb_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_rb_count">RB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_wr_count" id="max_wr_count" class="form-control validate"
+								min="{{ league_minimums.max_wr_count }}" value="{{ league_settings.max_wr_count }}"
+								max="{{ league_maximums.max_wr_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_wr_count">WR,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_te_count" id="max_te_count" class="form-control validate"
+								min="{{ league_minimums.max_te_count }}" value="{{ league_settings.max_te_count }}"
+								max="{{ league_maximums.max_te_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_te_count">TE,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_k_count" id="max_k_count" class="form-control validate"
+								min="{{ league_minimums.max_k_count }}" value="{{ league_settings.max_k_count }}"
+								max="{{ league_maximums.max_k_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_k_count">K,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_def_count" id="max_def_count" class="form-control validate"
+								min="{{ league_minimums.max_def_count }}" value="{{ league_settings.max_def_count }}"
+								max="{{ league_maximums.max_def_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_def_count">DEF,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_db_count" id="max_db_count" class="form-control validate"
+								min="{{ league_minimums.max_db_count }}" value="{{ league_settings.max_db_count }}"
+								max="{{ league_maximums.max_db_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_db_count">DB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_lb_count" id="max_lb_count" class="form-control validate"
+								min="{{ league_minimums.max_lb_count }}" value="{{ league_settings.max_lb_count }}"
+								max="{{ league_maximums.max_lb_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_lb_count">LB,</label>
+						</div>
+					</div>
+					<div class="col-1">
+						<div class="form-group">
+							<input type="number" name="max_dl_count" id="max_dl_count" class="form-control validate"
+								min="{{ league_minimums.max_dl_count }}" value="{{ league_settings.max_dl_count }}"
+								max="{{ league_maximums.max_dl_count }}" required>
+							<label data-error="wrong" data-success="right" for="max_dl_count">DL</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							<label data-error="wrong" data-success="right" for="roster_size">Roster Limit:</label>
+							<input type="number" name="roster_size" id="roster_size" class="form-control validate"
+								min="{{ league_minimums.roster_size }}" value="{{ league_settings.roster_size }}"
+								max="{{ league_maximums.roster_size }}" required>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+							<label data-error="wrong" data-success="right" for="ir_size">IR Limit:</label>
+							<input type="number" name="ir_size" id="ir_size" class="form-control validate"
+								min="{{ league_minimums.ir_size }}" value="{{ league_settings.ir_size }}"
+								max="{{ league_maximums.ir_size }}" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2 d-flex justify-content-right">
+						<input type="submit" class="btn btn-primary" value="Update Roster Settings" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<br/>
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			Flex Settings
+		</div>
+		<div class="card-body">
+			{% if "flex_1" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 1:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_1 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_2" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 2:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_2 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_3" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 3:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_3 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_4" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 4:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_4 }}
+					</div>
+				</div>
+			{% endif %}
+			{% if "flex_5" in league_settings %}
+				<div class="row">
+					<div class="col-2">
+						Flex 5:
+					</div>
+					<div class="col-10">
+						{{ league_settings.flex_5 }}
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	<br/>
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			Scoring Settings
+		</div>
+		<div class="card-body">
+			Coming Soon
+		</div>
+	</div>
 </div>
 
 <script src="{% static 'js/commish_settings.js' %}"></script>
+<script src="{% static 'js/league_draft_start_timer.js' %}"></script>
 {% endblock %}
