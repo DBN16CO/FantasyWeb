@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var draftTime = document.getElementById("draft_time_value");
 	if(draftTime !== null){
-		var countDownDate = new Date(draft_time.innerHTML).getTime();
+		var countDownDate = new Date(draftTime.textContent).getTime();
 
 		// Update the count down every 1 second
 		var x = setInterval(function() {
@@ -38,12 +38,12 @@ $(document).ready(function(){
 			printedTime += seconds + " sec";
 
 			// Output the result in an element with id="time_until_draft"
-			document.getElementById("time_until_draft").innerHTML = printedTime;
+			document.getElementById("time_until_draft").textContent = printedTime;
 
 			// If the count down is over, write some text
 			if (distance < 0) {
 				clearInterval(x);
-				document.getElementById("time_until_draft").innerHTML = "Live Now!";
+				document.getElementById("time_until_draft").textContent = "Live Now!";
 			}
 		}, 1000);
 	}
