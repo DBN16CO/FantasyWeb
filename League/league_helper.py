@@ -63,3 +63,16 @@ def set_league_defaults(league_id):
 				name = "flex_1"
 			league_setting = League_Setting(league=league, name=name, value=inner_dict["default"])
 			league_setting.save()
+
+def get_league_min_max():
+	league_min = {}
+	league_max = {}
+	with open('FantasyWeb/league_settings_values.json') as settings_file:
+		data = json.load(settings_file)
+		for name,inner_dict in data.items():
+			if "min" in inner_dict:
+				league_min[name] = inner_dict["min"]
+			if "max" in inner_dict:
+				league_max[name] = inner_dict["max"]
+
+	return league_min, league_max
