@@ -2,9 +2,289 @@
 
 {% block league_content %}
 {% load static %}
+<script src="{% static 'js/league_my_team.js' %}"></script>
 
 <div id="content">
 	<p>My Team</p>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			QB
+		</div>
+		<div class="card-body">
+			<table id="qb-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'QB' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			RB
+		</div>
+		<div class="card-body">
+			<table id="rb-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'RB' or player_contract.player.position == 'FB' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			WR
+		</div>
+		<div class="card-body">
+			<table id="wr-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'WR' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			TE
+		</div>
+		<div class="card-body">
+			<table id="te-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'TE' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			K
+		</div>
+		<div class="card-body">
+			<table id="k-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'K' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			DEF
+		</div>
+		<div class="card-body">
+			<table id="def-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'DEF' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			DB
+		</div>
+		<div class="card-body">
+			<table id="db-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'DB' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			LB
+		</div>
+		<div class="card-body">
+			<table id="lb-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'LB' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			DL
+		</div>
+		<div class="card-body">
+			<table id="dl-table" class="table table-striped table-bordered dataTable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Team</th>
+						<th>Contract Length (years)</th>
+						<th>Contract Value ($)</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for player_contract in player_contracts %}
+						{% if player_contract.player.position == 'DL' %}
+							<tr>
+								<td>{{ player_contract.player.name }}</td>
+								<td>{{ player_contract.player.team }}</td>
+								<td>{{ player_contract.length }}</td>
+								<td>{{ player_contract.value }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 			
 
