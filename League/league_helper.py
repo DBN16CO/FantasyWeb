@@ -24,7 +24,16 @@ def get_all_league_members(league_id):
 	return League_Member.objects.filter(league__pk=league_id)
 
 def get_league_setting_values(league_id):
-	return League_Setting.objects.filter(league__id=league_id)
+	settings_values = League_Setting.objects.filter(league__id=league_id)
+	league_settings = {}
+	for setting in settings_values:
+		if setting.name == "draft_time":
+			dt = datetime.datetime.strptime(setting.value, '%Y-%m-%d %H:%M:%S')
+			league_settings[setting.name] = dt.strftime('%A, %B %-d, %Y %-I:%M %p')
+		else:
+			league_settings[setting.name] = setting.value
+
+	return league_settings
 
 def get_player_contracts(league, user):
 	return Player_Contract.objects.filter(league=league, owner__member=user)

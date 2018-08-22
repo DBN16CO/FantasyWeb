@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -121,13 +123,9 @@ def get_league_settings(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
-	settings_values = get_league_setting_values(league_id)
 
-	league_settings = {}
-	for setting in settings_values:
-		league_settings[setting.name] = setting.value
-
-	context = {"league_id": league_id, "league_name": league.name, "league_settings": league_settings,
+	context = {"league_id": league_id, "league_name": league.name,
+			   "league_settings": get_league_setting_values(league_id),
 	           "active": "settings", "is_commish": league_member.is_commish}
 
 	return render(request, 'league_settings.html', context=context)
@@ -146,6 +144,7 @@ def get_league_commish_settings(request, league_id):
 
 	# Process any settings updates
 	if request.method == 'POST':
+		# Updates to roster or draft settings
 		if request.POST['form_type'] in ['draft-settings-form', 'roster-settings-form']:
 			for setting_name in request.POST:
 				league_setting_update = League_Setting.objects.filter(league=league, name=setting_name).first()
@@ -157,14 +156,19 @@ def get_league_commish_settings(request, league_id):
 
 				league_setting_update.value = request.POST[setting_name]
 				league_setting_update.save()
+		# Updates to the draft time
+		elif request.POST['form_type'] == 'set-draft-time-form' and 'datetime' in request.POST:
+			draft_time = datetime.strptime(request.POST['datetime'], '%m/%d/%Y %I:%M %p')
 
-	settings_values = get_league_setting_values(league_id)
+			draft_time_setting = League_Setting.objects.filter(league=league, name="draft_time").first()
+			if draft_time_setting is None:
+				draft_time_setting = League_Setting(league=league, name="draft_time", value=str(draft_time))
 
-	league_settings = {}
-	for setting in settings_values:
-		league_settings[setting.name] = setting.value
+			draft_time_setting.value = str(draft_time)
+			draft_time_setting.save()
 
-	context = {"league_id": league_id, "league_name": league.name, "league_settings": league_settings,
+	context = {"league_id": league_id, "league_name": league.name,
+			   "league_settings": get_league_setting_values(league_id),
 	           "active": "commish_settings", "league_minimums": league_min, "league_maximums": league_max,
 	           "invite_link": "https://fantasyfootballelites.com/invite/%s" % league.invite_id,
 	           "is_commish": league_member.is_commish}

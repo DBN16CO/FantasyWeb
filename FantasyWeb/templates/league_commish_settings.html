@@ -2,6 +2,11 @@
 
 {% block league_content %}
 {% load static %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div id="content">
 	<p>Commish Settings</p>
@@ -16,6 +21,56 @@
 		</div>
 	</div>
 	<br/>
+	<div class="card">
+		<div class="card-header text-white bg-secondary">
+			Draft Settings
+		</div>
+		<div class="card-body">
+			<form method="POST">
+		    	<div class="row">
+					{% csrf_token %}
+					<input type="hidden" name="form_type" value="set-draft-time-form">
+					<div class="col-sm-6">
+			            <div class="form-group">
+			                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+								<input type="text" name="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker1" required/>
+			                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+			                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			        <script type="text/javascript">
+			            $(function () {
+			                $('#datetimepicker1').datetimepicker();
+			            });
+			        </script>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						Current Draft Time:
+						{% if league_settings.draft_time is not None %}
+							<div id="draft_time_value">{{ league_settings.draft_time }}</div>
+						{% else %}
+							Not yet set
+						{% endif %}
+					</div>
+					<div class="col-sm-6">
+						{% if league_settings.draft_time is not None %}
+							Time Until Draft:
+						{% endif %}
+						<div id="time_until_draft"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2 d-flex justify-content-right">
+						<input type="submit" class="btn btn-primary" value="Update Draft Start Time" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 	<br/>
 	<form method="POST">
 		{% csrf_token %}
@@ -63,13 +118,15 @@
 							max="{{ league_maximums.nominations_per_period }}" required>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2 d-flex justify-content-right">
+						<input type="submit" class="btn btn-primary" value="Update Draft Settings" />
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="modal-footer d-flex justify-content-right">
-			<input type="submit" class="btn btn-primary" value="Update Draft Settings" />
-		</div>
 	</form>
-	<br/>
 	<br/>
 	<form method="POST">
 		{% csrf_token %}
@@ -236,13 +293,33 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							<label data-error="wrong" data-success="right" for="roster_size">Roster Limit:</label>
+							<input type="number" name="roster_size" id="roster_size" class="form-control validate"
+								min="{{ league_minimums.roster_size }}" value="{{ league_settings.roster_size }}"
+								max="{{ league_maximums.roster_size }}" required>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+							<label data-error="wrong" data-success="right" for="ir_size">IR Limit:</label>
+							<input type="number" name="ir_size" id="ir_size" class="form-control validate"
+								min="{{ league_minimums.ir_size }}" value="{{ league_settings.ir_size }}"
+								max="{{ league_maximums.ir_size }}" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-10"></div>
+					<div class="col-2 d-flex justify-content-right">
+						<input type="submit" class="btn btn-primary" value="Update Roster Settings" />
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="modal-footer d-flex justify-content-right">
-			<input type="submit" class="btn btn-primary" value="Update Roster Settings" />
-		</div>
 	</form>
-	<br/>
 	<br/>
 	<div class="card">
 		<div class="card-header text-white bg-secondary">
@@ -302,7 +379,6 @@
 		</div>
 	</div>
 	<br/>
-	<br/>
 	<div class="card">
 		<div class="card-header text-white bg-secondary">
 			Scoring Settings
@@ -314,4 +390,5 @@
 </div>
 
 <script src="{% static 'js/commish_settings.js' %}"></script>
+<script src="{% static 'js/league_draft_start_timer.js' %}"></script>
 {% endblock %}
