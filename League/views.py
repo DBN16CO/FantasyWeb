@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from League.league_helper import get_league_member, get_league, get_free_agents, get_league_setting_values
+from League.league_helper import get_league_member, get_league, get_free_agents, \
+							get_all_league_members, get_league_setting_values
+
 
 @login_required(login_url="/login")
 def get_league_standings(request, league_id):
@@ -10,8 +12,10 @@ def get_league_standings(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	league_members = get_all_league_members(league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
+			   "league_members": league_members,
 	           "active": "standings", "is_commish": league_member.is_commish}
 	return render(request, 'league_standings.html', context=context)
 
