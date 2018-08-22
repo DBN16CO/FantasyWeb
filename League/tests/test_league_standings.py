@@ -28,9 +28,8 @@ class LeagueStandingsTestCase(BaseTestCase):
 		self.assertTrue(is_on_page(response, 'League: league_name1'))
 		self.assertTrue(is_on_page(response, '<p>Standings</p>'))
 		self.assertFalse(is_on_page(response, 'Commish Settings'))
-		print(response.content)
-		self.assertFalse(is_on_page(response, '%s</td>' % self.user.username))
-		self.assertTrue(is_on_page(response, "team1</td>"))
+		self.assertTrue(is_on_page(response, '<td>%s</td>' % self.user.username))
+		self.assertTrue(is_on_page(response, "<td>team1</td>"))
 
 		standings_nav_active = '<a class="nav-link white-text league-active" href="/league/%s">Standings</a>' % self.league.pk
 		self.assertTrue(is_on_page(response, standings_nav_active))
@@ -43,8 +42,8 @@ class LeagueStandingsTestCase(BaseTestCase):
 		self.assertTrue(is_on_page(response, 'League: league_name1'))
 		self.assertTrue(is_on_page(response, '<p>Standings</p>'))
 		self.assertTrue(is_on_page(response, 'Commish Settings'))
-		self.assertFalse(is_on_page(response, '%s</td>' % self.user.username))
-		self.assertTrue(is_on_page(response, "team1</td>"))
+		self.assertTrue(is_on_page(response, '<td>%s</td>' % self.user.username))
+		self.assertTrue(is_on_page(response, "<td>team1</td>"))
 
 		standings_nav_active = '<a class="nav-link white-text league-active" href="/league/%s">Standings</a>' % self.league.pk
 		self.assertTrue(is_on_page(response, standings_nav_active))

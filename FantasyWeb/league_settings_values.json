@@ -1,0 +1,156 @@
+{
+	"owner_limit": {
+		"type": "int",
+		"min": 2,
+		"max": 32,
+		"default": 10
+	},
+	"salary_cap": {
+		"type": "int",
+		"min": -1,
+		"max": 999,
+		"default": 0
+	},
+	"roster_size": {
+		"type": "int",
+		"min": 2,
+		"max": 100,
+		"default": 18
+	},
+	"max_contract_years": {
+		"type": "int",
+		"min": -1,
+		"max": 100,
+		"default": -1
+	},
+	"starting_qb_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 1
+	},
+	"starting_rb_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 2
+	},
+	"starting_wr_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 2
+	},
+	"starting_te_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 1
+	},
+	"starting_k_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 1
+	},
+	"starting_def_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 1
+	},
+	"starting_db_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 0
+	},
+	"starting_lb_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 0
+	},
+	"starting_dl_count": {
+		"type": "int",
+		"min": 0,
+		"max": 32,
+		"default": 0
+	},
+	"max_qb_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 3
+	},
+	"max_rb_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 8
+	},
+	"max_wr_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 8
+	},
+	"max_te_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 3
+	},
+	"max_k_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 3
+	},
+	"max_def_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 3
+	},
+	"max_db_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 0
+	},
+	"max_lb_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 0
+	},
+	"max_dl_count": {
+		"type": "int",
+		"min": -1,
+		"max": 32,
+		"default": 0
+	},
+    "flex": {
+        "type": "list",
+        "enum": ["QB","RB","WR","TE","K","DEF","DB","DL","LB"],
+        "default": ["RB","WR","TE"]
+    },
+	"league_type": {
+        "type": "enum",
+        "values": ["Dutch Auction"],
+        "default": "Dutch Auction"
+    },
+	"draft_period": {
+        "type": "float",
+        "min": 0.5,
+		"max": 10080,
+        "default": 0
+    },
+	"nominations_per_period": {
+        "type": "int",
+        "min": -1,
+		"max": 32,
+        "default": 0
+    }
+}
