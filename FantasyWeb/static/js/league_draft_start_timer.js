@@ -19,18 +19,10 @@ $(document).ready(function(){
 
 			var printedTime = "";
 			if(days > 0){
-				printedTime += days + " day";
-                if(days != 1){
-                    printedTime += "s";
-                }
-                printedTime += " ";
+				printedTime += days + ((days !== 1)? " days ": " day ");
 			}
 			if(days > 0 || hours > 0){
-				printedTime += hours + " hour";
-                if(hours != 1){
-                    printedTime += "s";
-                }
-                printedTime += " ";
+				printedTime += hours + ((hours !== 1)? " hours ": " hour ");
 			}
 			if(days > 0 || hours > 0 || minutes > 0){
 				printedTime += minutes + " min ";
