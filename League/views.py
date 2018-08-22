@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from League.league_helper import get_league_member, get_league, get_free_agents, \
+from League.league_helper import get_league_member, get_league, get_free_agents, get_player_contracts,\
 							get_all_league_members, get_league_setting_values, get_league_min_max
 from League.models import League_Setting
 
@@ -29,8 +29,12 @@ def get_league_my_team(request, league_id):
 
 	league = get_league(league_id)
 
+	player_contracts = get_player_contracts(league, request.user)
+
 	context = {"league_id": league_id, "league_name": league.name,
-	           "active": "my_team", "is_commish": league_member.is_commish}
+	           "active": "my_team",
+	           "player_contracts": player_contracts,
+	           "is_commish": league_member.is_commish}
 	return render(request, 'league_my_team.html', context=context)
 
 @login_required(login_url="/login")

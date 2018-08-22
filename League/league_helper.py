@@ -26,6 +26,9 @@ def get_all_league_members(league_id):
 def get_league_setting_values(league_id):
 	return League_Setting.objects.filter(league__id=league_id)
 
+def get_player_contracts(league, user):
+	return Player_Contract.objects.filter(league=league, owner__member=user)
+
 def create_new_league(user, league_name, owner_limit):
 	league = League(name=league_name, invite_id=None,
 		year_created=datetime.date.today().year)
