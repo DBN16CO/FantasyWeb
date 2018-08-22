@@ -133,8 +133,13 @@ def get_league_commish_settings(request, league_id):
 		return HttpResponseRedirect('/league/%s' % league_id)
 
 	league = get_league(league_id)
+	settings_values = get_league_setting_values(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name,
+	league_settings = {}
+	for setting in settings_values:
+		league_settings[setting.name] = setting.value
+
+	context = {"league_id": league_id, "league_name": league.name, "league_settings": league_settings,
 	           "active": "commish_settings",
 	           "invite_link": "https://fantasyfootballelites.com/invite/%s" % league.invite_id,
 	           "is_commish": league_member.is_commish}
