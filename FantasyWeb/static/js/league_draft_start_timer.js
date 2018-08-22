@@ -8,11 +8,14 @@ $(document).ready(function(){
         var printedTime = "";
         if(days > 0){
             printedTime += days + ((days !== 1)? " days ": " day ");
-        }
-        if(days > 0 || hours > 0){
             printedTime += hours + ((hours !== 1)? " hours ": " hour ");
+            printedTime += minutes + " min ";
         }
-        if(days > 0 || hours > 0 || minutes > 0){
+        if(days === 0 && hours > 0){
+            printedTime += hours + ((hours !== 1)? " hours ": " hour ");
+            printedTime += minutes + " min ";
+        }
+        if(days === 0 && hours === 0 && minutes > 0){
             printedTime += minutes + " min ";
         }
         printedTime += seconds + " sec";
@@ -33,7 +36,7 @@ $(document).ready(function(){
 			var distance = countDownDate - now;
 
 			// Time calculations for days, hours, minutes and seconds
-			printedTime = createTimeRemainingString(distance);
+			var printedTime = createTimeRemainingString(distance);
 
 			// Output the result in an element with id="time_until_draft"
 			document.getElementById("time_until_draft").textContent = printedTime;
