@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	var draft_time = document.getElementById("draft_time_value");
-	if(draft_time !== null){
+	var draftTime = document.getElementById("draft_time_value");
+	if(draftTime !== null){
 		var countDownDate = new Date(draft_time.innerHTML).getTime();
 
 		// Update the count down every 1 second
@@ -17,28 +17,28 @@ $(document).ready(function(){
 			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-			var printed_time = "";
+			var printedTime = "";
 			if(days > 0){
-				printed_time += days + " day";
+				printedTime += days + " day";
                 if(days != 1){
-                    printed_time += "s";
+                    printedTime += "s";
                 }
-                printed_time += " ";
+                printedTime += " ";
 			}
 			if(days > 0 || hours > 0){
-				printed_time += hours + " hour";
+				printedTime += hours + " hour";
                 if(hours != 1){
-                    printed_time += "s";
+                    printedTime += "s";
                 }
-                printed_time += " ";
+                printedTime += " ";
 			}
 			if(days > 0 || hours > 0 || minutes > 0){
-				printed_time += minutes + " min ";
+				printedTime += minutes + " min ";
 			}
-			printed_time += seconds + " sec";
+			printedTime += seconds + " sec";
 
 			// Output the result in an element with id="time_until_draft"
-			document.getElementById("time_until_draft").innerHTML = printed_time;
+			document.getElementById("time_until_draft").innerHTML = printedTime;
 
 			// If the count down is over, write some text
 			if (distance < 0) {
