@@ -16,3 +16,6 @@ def get_free_agents(league_id):
 	free_agents = Player.objects.filter().exclude(id__in=taken_players)
 
 	return free_agents
+
+def get_all_league_members(league_id):
+	return League_Member.objects.filter(league__pk=league_id)

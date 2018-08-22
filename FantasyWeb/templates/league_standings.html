@@ -2,9 +2,30 @@
 
 {% block league_content %}
 {% load static %}
+<script src="{% static 'js/league_standings.js' %}"></script>
 
 <div id="content">
 	<p>Standings</p>
+
+	<table id="standings-table" class="table table-striped table-bordered dataTable">
+		<thead>
+			<tr>
+				<td>Team Name</td>
+				<td>Owner</td>
+				<td>Rank</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for owner in league_members %}
+				<tr>
+					<td>{{ owner.team_name }}</td>
+					<td>{{ owner.member.username }}</td>
+					<td>1</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 </div>
 			
 
