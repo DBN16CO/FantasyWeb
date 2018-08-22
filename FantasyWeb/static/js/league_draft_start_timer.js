@@ -33,7 +33,7 @@ $(document).ready(function(){
 			var distance = countDownDate - now;
 
 			// Time calculations for days, hours, minutes and seconds
-		    var printedTime = createTimeRemainingString(distance);
+            var printedTime = createTimeRemainingString(distance);
 
 			// Output the result in an element with id="time_until_draft"
 			document.getElementById("time_until_draft").textContent = printedTime;
