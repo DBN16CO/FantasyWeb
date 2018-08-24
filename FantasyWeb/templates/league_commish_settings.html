@@ -26,7 +26,7 @@
 			Draft Settings
 		</div>
 		<div class="card-body">
-			<form method="POST">
+			<form id="draft-time-form" method="POST">
 		    	<div class="row">
 					{% csrf_token %}
 					<input type="hidden" name="form_type" value="set-draft-time-form">
@@ -40,11 +40,7 @@
 			                </div>
 			            </div>
 			        </div>
-			        <script type="text/javascript">
-			            $(function () {
-			                $('#datetimepicker1').datetimepicker();
-			            });
-			        </script>
+
 				</div>
 				<div class="row">
 					<div class="col-sm-6">

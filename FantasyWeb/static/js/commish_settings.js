@@ -18,4 +18,21 @@ $(document).ready(function(){
 	$("#copy-btn").on("click", function(){
 		copyStringToClipboard($("#invite-link").text());
 	});
+
+
+    $('#datetimepicker1').datetimepicker();
+   
+
+    $("#draft-time-form").submit(function(){
+	    // Let's find the input to check
+	    var input = $(this).find("input[name=datetime]");
+	    if (input.val()) {
+	        var picker = $('#datetimepicker1').data('datetimepicker');
+	        console.log(picker);
+	//      alert(input.val());
+	//      alert(picker.getLocalDate().toISOString());
+	        input.val(picker.viewDate().toISOString());
+	        console.log(input.val());
+	        }
+	    });
 });

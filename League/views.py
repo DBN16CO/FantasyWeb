@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from League.league_helper import get_league_member, get_league, get_free_agents, get_player_contracts,\
-							get_all_league_members, get_league_setting_values, get_league_min_max
+							get_all_league_members, is_league_drafting, get_league_setting_values, \
+							get_league_min_max
 from League.models import League_Setting
 
 
@@ -15,11 +16,13 @@ def get_league_standings(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
 	league_members = get_all_league_members(league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
 			   "league_members": league_members,
-	           "active": "standings", "is_commish": league_member.is_commish}
+	           "active": "standings", "is_drafting": is_drafting,
+	           "is_commish": league_member.is_commish}
 	return render(request, 'league_standings.html', context=context)
 
 
@@ -30,11 +33,13 @@ def get_league_my_team(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
 
 	player_contracts = get_player_contracts(league, request.user)
 
 	context = {"league_id": league_id, "league_name": league.name,
 	           "active": "my_team",
+	           "is_drafting": is_drafting,
 	           "player_contracts": player_contracts,
 	           "is_commish": league_member.is_commish}
 	return render(request, 'league_my_team.html', context=context)
@@ -46,9 +51,11 @@ def get_league_schedule(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
-	           "active": "schedule", "is_commish": league_member.is_commish}
+	           "active": "schedule", "is_drafting": is_drafting,
+	           "is_commish": league_member.is_commish}
 	return render(request, 'league_schedule.html', context=context)
 
 @login_required(login_url="/login")
@@ -58,6 +65,8 @@ def get_league_free_agents(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
+
 	player_list = get_free_agents(league_id)
 
 	free_agents = []
@@ -77,7 +86,7 @@ def get_league_free_agents(request, league_id):
 		free_agents.append(p)
 
 	context = {"league_id": league_id, "league_name": league.name, "free_agents": free_agents,
-	           "active": "free_agents", "is_commish": league_member.is_commish}
+	           "active": "free_agents", "is_drafting": is_drafting, "is_commish": league_member.is_commish}
 	return render(request, 'league_free_agents.html', context=context)
 
 @login_required(login_url="/login")
@@ -87,22 +96,28 @@ def get_league_trade_block(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
-	           "active": "trade_block", "is_commish": league_member.is_commish}
+	           "active": "trade_block", "is_drafting": is_drafting,
+	           "is_commish": league_member.is_commish}
 	return render(request, 'league_trade_block.html', context=context)
 
 @login_required(login_url="/login")
-def get_league_draft_history(request, league_id):
+def get_league_draft(request, league_id):
 	league_member = get_league_member(request.user, league_id)
 	if not league_member:
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
+
+	if not is_drafting:
+		return HttpResponseRedirect('/league/%s' % league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
-	           "active": "draft_history", "is_commish": league_member.is_commish}
-	return render(request, 'league_draft_history.html', context=context)
+	           "active": "draft", "is_drafting": is_drafting, "is_commish": league_member.is_commish}
+	return render(request, 'league_draft.html', context=context)
 
 @login_required(login_url="/login")
 def get_league_forums(request, league_id):
@@ -111,9 +126,11 @@ def get_league_forums(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
-	           "active": "forums", "is_commish": league_member.is_commish}
+	           "active": "forums", "is_drafting": is_drafting,
+	           "is_commish": league_member.is_commish}
 	return render(request, 'league_forums.html', context=context)
 
 @login_required(login_url="/login")
@@ -123,9 +140,11 @@ def get_league_settings(request, league_id):
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
+	is_drafting = is_league_drafting(league_id)
 
 	context = {"league_id": league_id, "league_name": league.name,
 			   "league_settings": get_league_setting_values(league_id),
+			   "is_drafting": is_drafting,
 	           "active": "settings", "is_commish": league_member.is_commish}
 
 	return render(request, 'league_settings.html', context=context)
@@ -141,6 +160,7 @@ def get_league_commish_settings(request, league_id):
 
 	league = get_league(league_id)
 	league_min, league_max = get_league_min_max()
+	is_drafting = is_league_drafting(league_id)
 
 	# Process any settings updates
 	if request.method == 'POST':
@@ -168,6 +188,7 @@ def get_league_commish_settings(request, league_id):
 			draft_time_setting.save()
 
 	context = {"league_id": league_id, "league_name": league.name,
+			   "is_drafting": is_drafting,
 			   "league_settings": get_league_setting_values(league_id),
 	           "active": "commish_settings", "league_minimums": league_min, "league_maximums": league_max,
 	           "invite_link": "https://fantasyfootballelites.com/invite/%s" % league.invite_id,

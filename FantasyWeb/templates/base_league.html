@@ -11,6 +11,16 @@
 			<div class="pb-2 mt-4 mb-5"></div>
 			<nav class="g-faded sidebar league-sidebar">
 				<ul class="nav nav-pills flex-column">
+					{% if active == "draft" and is_drafting %}
+					<li class="nav-item">
+						<a class="nav-link white-text league-active" href="/league/{{league_id}}/draft">Draft</a>
+					</li>
+					{% elif is_drafting %}
+					<li class="nav-item">
+						<a class="nav-link white-text" href="/league/{{league_id}}/draft">Draft</a>
+					</li>
+					{% endif %}
+
 					{% if active == "standings" %}
 					<li class="nav-item">
 						<a class="nav-link white-text league-active" href="/league/{{league_id}}">Standings</a>
@@ -58,16 +68,6 @@
 					{% else %}
 					<li class="nav-item">
 						<a class="nav-link white-text" href="/league/{{league_id}}/trade_block">Trade Block</a>
-					</li>
-					{% endif %}
-
-					{% if active == "draft_history" %}
-					<li class="nav-item">
-						<a class="nav-link white-text league-active" href="/league/{{league_id}}/draft_history">Draft History</a>
-					</li>
-					{% else %}
-					<li class="nav-item">
-						<a class="nav-link white-text" href="/league/{{league_id}}/draft_history">Draft History</a>
 					</li>
 					{% endif %}
 

@@ -35,6 +35,9 @@ def get_league_setting_values(league_id):
 
 	return league_settings
 
+def get_league_setting_for_value(league_id, setting_name):
+	return League_Setting.objects.filter(league__id=league_id, name=setting_name).first()
+
 def get_player_contracts(league, user):
 	return Player_Contract.objects.filter(league=league, owner__member=user)
 
@@ -88,3 +91,21 @@ def get_league_min_max():
 				league_max[name] = inner_dict["max"]
 
 	return league_min, league_max
+
+def is_league_drafting(league_id):
+	draft_time = get_league_setting_for_value(league_id, "draft_time")
+
+	if draft_time is None:
+		return False
+
+	dt = datetime.datetime.strptime(draft_time.value, '%Y-%m-%d %H:%M:%S')
+
+	print("League Setting: " + str(dt))
+
+	now = datetime.datetime.now()
+
+	print("Now: " + str(now))
+
+	return now > dt
+
+
