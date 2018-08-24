@@ -4,12 +4,15 @@ import time
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.test import TestCase
-from League.models import League, League_Member, League_Setting
+from League.models import League, League_Member, League_Setting, Player
 
 
 def add_league_member(user, league, team_name, commish=False):
 	return League_Member.objects.create(league=league, member=user, team_name=team_name, is_commish=commish)
 
+def add_test_player(name, team, position):
+	return Player.objects.create(name=name, team=team, number="1", position=position, status="ACT", height="5'11\"",
+		weight="225", dob="8/7/87", experience="7", college="North Carolina")
 
 def is_on_page(response, text):
 	html_parser = html.parser.HTMLParser()

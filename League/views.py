@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from League.league_helper import get_league_member, get_league, get_free_agents, get_player_contracts,\
-							get_all_league_members, get_league_setting_values, get_league_min_max
+							get_all_league_members, get_league_setting_values, get_league_min_max,\
+							get_draft_bid_and_nomination_players
 from League.models import League_Setting
 
 
@@ -93,16 +94,25 @@ def get_league_trade_block(request, league_id):
 	return render(request, 'league_trade_block.html', context=context)
 
 @login_required(login_url="/login")
-def get_league_draft_history(request, league_id):
+def get_league_draft(request, league_id):
 	league_member = get_league_member(request.user, league_id)
 	if not league_member:
 		return HttpResponseRedirect('/')
 
 	league = get_league(league_id)
 
-	context = {"league_id": league_id, "league_name": league.name,
-	           "active": "draft_history", "is_commish": league_member.is_commish}
-	return render(request, 'league_draft_history.html', context=context)
+	bid_players_list,nominate_players_list = get_draft_bid_and_nomination_players(league, league_member)
+	player_nomination_count = League_Setting.objects.filter(league=league, name="nominations_per_period").first()
+	if player_nomination_count is None:
+		player_nomination_count = "0"
+	else:
+		player_nomination_count = player_nomination_count.value
+
+	context = {"league_id": league_id, "league_name": league.name, "bid_players": bid_players_list,
+	           "active": "draft", "is_commish": league_member.is_commish,
+			   "player_nomination_count": player_nomination_count,
+			   "nomination_players": nominate_players_list}
+	return render(request, 'league_draft.html', context=context)
 
 @login_required(login_url="/login")
 def get_league_forums(request, league_id):
