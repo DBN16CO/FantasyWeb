@@ -6,6 +6,7 @@ class League(models.Model):
 	invite_id 		= models.CharField(max_length=100, unique=True, null=True)
 	draft_complete 	= models.BooleanField(default=False)
 	year_created 	= models.IntegerField()
+	cur_draft_round = models.IntegerField(default=0)
 
 	def __str__(self):
 		return self.name + "[" + str(self.year_created) + "]"

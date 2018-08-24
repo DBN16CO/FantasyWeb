@@ -1,8 +1,9 @@
 import datetime
 import json
 import uuid
+from math import floor
 
-from .models import League, League_Member, League_Setting, Player, Player_Contract
+from .models import League, League_Member, League_Setting, Player, Player_Contract, Player_Nomination
 
 def get_league(league_id):
 	return League.objects.filter(pk=league_id).first()
@@ -88,3 +89,40 @@ def get_league_min_max():
 				league_max[name] = inner_dict["max"]
 
 	return league_min, league_max
+
+def get_draft_bid_and_nomination_players(league, owner):
+	bid_players_list = []
+	nominate_players_list = []
+
+	draft_time = League_Setting.objects.filter(league=league, name="draft_time").first()
+	draft_period = League_Setting.objects.filter(league=league, name="draft_period").first()
+
+	if draft_time is not None and draft_period is not None:
+		draft_time = datetime.datetime.strptime(draft_time.value, "%Y-%m-%dT%H:%M:%S.%f")
+		minute_offset = int(floor(float(draft_period.value)))
+		second_offset = int((float(draft_period.value) % 1) * 60)
+		start_time = draft_time + datetime.timedelta(minutes=minute_offset * league.cur_draft_round,
+											seconds=second_offset * league.cur_draft_round)
+		nominate_time = draft_time + datetime.timedelta(minutes=minute_offset * (league.cur_draft_round + 1),
+												seconds=second_offset * (league.cur_draft_round + 1))
+		bid_players = Player_Nomination.objects.filter(owner__league=league,
+												nomination_time__range=(start_time, nominate_time))
+		nominate_players= Player_Nomination.objects.filter(owner=owner, nomination_time__gt=nominate_time)
+
+		for bp in bid_players:
+			player = {}
+			player["id"] = bp.player.pk
+			player["name"] = bp.player.name
+			player["position"] = bp.player.position
+			player["team"] = bp.player.team
+			bid_players_list.append(player)
+
+		for np in nominate_players:
+			player = {}
+			player["id"] = np.player.pk
+			player["name"] = np.player.name
+			player["position"] = np.player.position
+			player["team"] = np.player.team
+			nominate_players_list.append(player)
+
+	return bid_players_list, nominate_players_list
